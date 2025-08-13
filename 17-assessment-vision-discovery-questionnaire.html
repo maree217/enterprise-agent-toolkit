@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Organism Vision Discovery Assessment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #2c3e50;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin-bottom: 3rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .section h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        .question {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .question label {
+            font-weight: 600;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .question-subtitle {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .radio-group, .checkbox-group {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .radio-option, .checkbox-option {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .radio-option:hover, .checkbox-option:hover {
+            background: #e9ecef;
+        }
+
+        .radio-option input, .checkbox-option input {
+            margin-right: 0.75rem;
+            transform: scale(1.2);
+        }
+
+        .slider-container {
+            margin: 1rem 0;
+        }
+
+        .slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 5px;
+            background: #e9ecef;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+
+        .value-display {
+            text-align: center;
+            font-weight: bold;
+            color: #667eea;
+            margin-top: 0.5rem;
+        }
+
+        .results-section {
+            display: none;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 3rem;
+            border-radius: 15px;
+            margin-top: 2rem;
+        }
+
+        .results-section h2 {
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .result-category {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .score {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .recommendation {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            display: block;
+            width: 200px;
+            margin: 2rem auto;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: 2px solid #667eea;
+            color: #667eea;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .urgency-high { color: #e74c3c; font-weight: bold; }
+        .urgency-medium { color: #f39c12; font-weight: bold; }
+        .urgency-low { color: #27ae60; font-weight: bold; }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .container { padding: 1.5rem; }
+            .header h1 { font-size: 2rem; }
+            .section { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧬 AI Organism Vision Discovery</h1>
+            <p>Unlock your organization's transformation potential with our comprehensive assessment designed to identify high-impact AI opportunities.</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar"></div>
+        </div>
+
+        <form id="assessmentForm">
+            <!-- Section 1: Organization Context -->
+            <div class="section" data-section="1">
+                <h2>🏢 Organization Context</h2>
+                
+                <div class="question">
+                    <label>Company Size</label>
+                    <div class="question-subtitle">How many employees does your organization have?</div>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" name="company_size" value="startup" id="size_startup">
+                            <label for="size_startup">Startup (1-50 employees)</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="company_size" value="small" id="size_small">
+                            <label for="size_small">Small Business (51-200 employees)</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="company_size" value="medium" id="size_medium">
+                            <label for="size_medium">Medium Enterprise (201-1000 employees)</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="company_size" value="large" id="size_large">
+                            <label for="size_large">Large Enterprise (1000+ employees)</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label>Industry Sector</label>
+                    <div class="question-subtitle">Which industry best describes your organization?</div>
+                    <select name="industry" class="form-control">
+                        <option value="">Select your industry</option>
+                        <option value="financial">Financial Services</option>
+                        <option value="healthcare">Healthcare & Life Sciences</option>
+                        <option value="professional">Professional Services</option>
+                        <option value="manufacturing">Manufacturing</option>
+                        <option value="retail">Retail & E-commerce</option>
+                        <option value="technology">Technology</option>
+                        <option value="education">Education</option>
+                        <option value="government">Government & Public Sector</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="question">
+                    <label>Current Microsoft Ecosystem Usage</label>
+                    <div class="question-subtitle">Select all Microsoft technologies currently in use</div>
+                    <div class="checkbox-group">
+                        <div class="checkbox-option">
+                            <input type="checkbox" name="ms_tech" value="office365" id="tech_office">
+                            <label for="tech_office">Microsoft 365 / Office 365</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" name="ms_tech" value="azure" id="tech_azure">
+                            <label for="tech_azure">Azure Cloud Services</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" name="ms_tech" value="dynamics" id="tech_dynamics">
+                            <label for="tech_dynamics">Dynamics 365</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" name="ms_tech" value="teams" id="tech_teams">
+                            <label for="tech_teams">Microsoft Teams</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" name="ms_tech" value="powerplatform" id="tech_power">
+                            <label for="tech_power">Power Platform</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" name="ms_tech" value="sharepoint" id="tech_sharepoint">
+                            <label for="tech_sharepoint">SharePoint</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" name="ms_tech" value="none" id="tech_none">
+                            <label for="tech_none">None of the above</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: Vision & Strategic Intent -->
+            <div class="section" data-section="2">
+                <h2>🎯 Vision & Strategic Intent</h2>
+                
+                <div class="question">
+                    <label>Transformation Ambition Level</label>
+                    <div class="question-subtitle">Where do you see your organization on the AI transformation spectrum?</div>
+                    <div class="slider-container">
+                        <input type="range" name="ambition_level" min="1" max="10" value="5" class="slider" id="ambitionSlider">
+                        <div class="slider-labels">
+                            <span>Incremental Improvement</span>
+                            <span>Revolutionary Transformation</span>
+                        </div>
+                        <div class="value-display" id="ambitionValue">5 - Balanced Approach</div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label>Primary Business Objectives</label>
+                    <div class="question-subtitle">What are your top 3 business priorities? (Select up to 3)</div>
+                    <div class="checkbox-group">
+                        <div class="checkbox-option">
+                            <input type="checkbox" name="objectives" value="cost_reduction" id="obj_cost">
+                            <label for="obj_cost">Cost Reduction & Operational Efficiency</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" name="objectives" value="customer_experience" id="obj_customer">
+                            <label for="obj_customer">Customer Experience Enhancement</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" name="objectives" value="revenue_growth" id="obj_revenue">
+                            <label for="obj_revenue">Revenue Growth & Market Expansion</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" name="objectives" value="innovation" id="obj_innovation">
+                            <label for="obj_innovation">Innovation & Competitive Advantage</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" name="objectives" value="compliance" id="obj_compliance">
+                            <label for="obj_compliance">Compliance & Risk Management</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" name="objectives" value="employee_productivity" id="obj_productivity">
+                            <label for="obj_productivity">Employee Productivity & Satisfaction</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" name="objectives" value="digital_transformation" id="obj_digital">
+                            <label for="obj_digital">Digital Transformation & Modernization</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label>Biggest Business Challenge</label>
+                    <div class="question-subtitle">What is the most significant challenge hindering your growth?</div>
+                    <textarea name="biggest_challenge" rows="4" class="form-control" placeholder="Describe your organization's biggest operational or strategic challenge..."></textarea>
+                </div>
+
+                <div class="question">
+                    <label>Success Vision</label>
+                    <div class="question-subtitle">Imagine your organization 2 years from now with AI transformation complete. What would success look like?</div>
+                    <textarea name="success_vision" rows="4" class="form-control" placeholder="Describe your ideal future state..."></textarea>
+                </div>
+            </div>
+
+            <!-- Section 3: Current State Assessment -->
+            <div class="section" data-section="3">
+                <h2>📊 Current State Assessment</h2>
+                
+                <div class="question">
+                    <label>AI Maturity Level</label>
+                    <div class="question-subtitle">What best describes your current AI experience?</div>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" name="ai_maturity" value="none" id="ai_none">
+                            <label for="ai_none">No AI implementation yet</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="ai_maturity" value="exploring" id="ai_exploring">
+                            <label for="ai_exploring">Exploring and researching AI opportunities</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="ai_maturity" value="pilot" id="ai_pilot">
+                            <label for="ai_pilot">Running pilot projects or proof of concepts</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="ai_maturity" value="production" id="ai_production">
+                            <label for="ai_production">Have AI systems in production</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="ai_maturity" value="advanced" id="ai_advanced">
+                            <label for="ai_advanced">Advanced AI integration across multiple areas</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label>Process Automation Readiness</label>
+                    <div class="question-subtitle">How well-documented and standardized are your key business processes?</div>
+                    <div class="slider-container">
+                        <input type="range" name="process_readiness" min="1" max="10" value="5" class="slider" id="processSlider">
+                        <div class="slider-labels">
+                            <span>Ad-hoc, Undocumented</span>
+                            <span>Fully Standardized</span>
+                        </div>
+                        <div class="value-display" id="processValue">5 - Partially Documented</div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label>Data Infrastructure Quality</label>
+                    <div class="question-subtitle">How would you rate your organization's data quality and accessibility?</div>
+                    <div class="slider-container">
+                        <input type="range" name="data_quality" min="1" max="10" value="5" class="slider" id="dataSlider">
+                        <div class="slider-labels">
+                            <span>Poor, Fragmented</span>
+                            <span>Excellent, Centralized</span>
+                        </div>
+                        <div class="value-display" id="dataValue">5 - Moderate Quality</div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label>Change Management Capability</label>
+                    <div class="question-subtitle">How does your organization typically handle technology changes?</div>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" name="change_capability" value="resistant" id="change_resistant">
+                            <label for="change_resistant">Resistant to change, prefers status quo</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="change_capability" value="cautious" id="change_cautious">
+                            <label for="change_cautious">Cautious but open to proven solutions</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="change_capability" value="adaptable" id="change_adaptable">
+                            <label for="change_adaptable">Adaptable with proper planning and support</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="change_capability" value="agile" id="change_agile">
+                            <label for="change_agile">Agile and embraces change as opportunity</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 4: Use Case Priorities -->
+            <div class="section" data-section="4">
+                <h2>🚀 Use Case Priorities</h2>
+                
+                <div class="question">
+                    <label>High-Impact Use Cases</label>
+                    <div class="question-subtitle">Which AI agent capabilities would deliver the most value? (Select up to 5)</div>
+                    <div class="checkbox-group">
+                        <div class="checkbox-option">
+                            <input type="checkbox" name="use_cases" value="customer_service" id="uc_customer">
+                            <label for="uc_customer">Intelligent Customer Service & Support</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" name="use_cases" value="sales_support" id="uc_sales">
+                            <label for="uc_sales">Sales Intelligence & Lead Qualification</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" name="use_cases" value="hr_automation" id="uc_hr">
+                            <label for="uc_hr">HR Operations & Employee Self-Service</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" name="use_cases" value="document_processing" id="uc_docs">
+                            <label for="uc_docs">Document Processing & Classification</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" name="use_cases" value="financial_operations" id="uc_finance">
+                            <label for="uc_finance">Financial Operations & Reporting</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" name="use_cases" value="workflow_automation" id="uc_workflow">
+                            <label for="uc_workflow">Workflow Automation & Approvals</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" name="use_cases" value="knowledge_search" id="uc_knowledge">
+                            <label for="uc_knowledge">Knowledge Search & Retrieval</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" name="use_cases" value="compliance_monitoring" id="uc_compliance">
+                            <label for="uc_compliance">Compliance Monitoring & Risk Assessment</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" name="use_cases" value="predictive_analytics" id="uc_analytics">
+                            <label for="uc_analytics">Predictive Analytics & Business Intelligence</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label>Implementation Timeline Preference</label>
+                    <div class="question-subtitle">What's your preferred approach to AI implementation?</div>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" name="timeline_preference" value="quick_wins" id="timeline_quick">
+                            <label for="timeline_quick">Quick wins first (2-4 weeks to see results)</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="timeline_preference" value="balanced" id="timeline_balanced">
+                            <label for="timeline_balanced">Balanced approach (2-3 months for comprehensive solution)</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="timeline_preference" value="comprehensive" id="timeline_comprehensive">
+                            <label for="timeline_comprehensive">Comprehensive transformation (6+ months for full ecosystem)</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label>Budget Range</label>
+                    <div class="question-subtitle">What's your expected investment range for AI transformation?</div>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" name="budget_range" value="small" id="budget_small">
+                            <label for="budget_small">Under £50K (Pilot & Proof of Concept)</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="budget_range" value="medium" id="budget_medium">
+                            <label for="budget_medium">£50K - £200K (Department-level Implementation)</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="budget_range" value="large" id="budget_large">
+                            <label for="budget_large">£200K - £500K (Enterprise Implementation)</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="budget_range" value="enterprise" id="budget_enterprise">
+                            <label for="budget_enterprise">£500K+ (Comprehensive Transformation)</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="navigation">
+                <button type="button" class="nav-btn" id="prevBtn" onclick="changeStep(-1)" disabled>Previous</button>
+                <button type="button" class="nav-btn" id="nextBtn" onclick="changeStep(1)">Next</button>
+                <button type="button" class="btn" id="submitBtn" onclick="generateResults()" style="display: none;">Generate Assessment</button>
+            </div>
+        </form>
+
+        <!-- Results Section -->
+        <div class="results-section" id="resultsSection">
+            <h2>🎯 Your AI Organism Transformation Roadmap</h2>
+            <div id="resultsContent"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        function updateProgress() {
+            const progress = (currentStep / totalSteps) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function showStep(step) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Show current section
+            const currentSection = document.querySelector(`[data-section="${step}"]`);
+            if (currentSection) {
+                currentSection.style.display = 'block';
+            }
+
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = step === 1;
+            document.getElementById('nextBtn').style.display = step === totalSteps ? 'none' : 'inline-block';
+            document.getElementById('submitBtn').style.display = step === totalSteps ? 'inline-block' : 'none';
+
+            updateProgress();
+        }
+
+        function changeStep(direction) {
+            if (direction === 1 && currentStep < totalSteps) {
+                currentStep++;
+            } else if (direction === -1 && currentStep > 1) {
+                currentStep--;
+            }
+            showStep(currentStep);
+        }
+
+        // Slider value updates
+        document.getElementById('ambitionSlider').addEventListener('input', function() {
+            const value = this.value;
+            const labels = [
+                '', 'Very Incremental', 'Incremental', 'Moderate', 'Balanced Approach', 
+                'Progressive', 'Ambitious', 'Very Ambitious', 'Revolutionary', 'Transformational', 'Complete Reinvention'
+            ];
+            document.getElementById('ambitionValue').textContent = `${value} - ${labels[value]}`;
+        });
+
+        document.getElementById('processSlider').addEventListener('input', function() {
+            const value = this.value;
+            const labels = [
+                '', 'Ad-hoc', 'Minimal', 'Basic', 'Some Structure', 'Partially Documented',
+                'Well Documented', 'Standardized', 'Highly Standardized', 'Optimized', 'Fully Automated'
+            ];
+            document.getElementById('processValue').textContent = `${value} - ${labels[value]}`;
+        });
+
+        document.getElementById('dataSlider').addEventListener('input', function() {
+            const value = this.value;
+            const labels = [
+                '', 'Very Poor', 'Poor', 'Below Average', 'Fair', 'Moderate Quality',
+                'Good Quality', 'High Quality', 'Excellent', 'Outstanding', 'World-class'
+            ];
+            document.getElementById('dataValue').textContent = `${value} - ${labels[value]}`;
+        });
+
+        function generateResults() {
+            const formData = new FormData(document.getElementById('assessmentForm'));
+            const data = Object.fromEntries(formData.entries());
+            
+            // Get multiple select values
+            const msTech = formData.getAll('ms_tech');
+            const objectives = formData.getAll('objectives');
+            const useCases = formData.getAll('use_cases');
+
+            // Calculate scores
+            const scores = calculateScores(data, msTech, objectives, useCases);
+            
+            // Generate recommendations
+            const recommendations = generateRecommendations(scores, data, useCases);
+            
+            // Display results
+            displayResults(scores, recommendations);
+        }
+
+        function calculateScores(data, msTech, objectives, useCases) {
+            let readinessScore = 0;
+            let urgencyScore = 0;
+            let impactScore = 0;
+
+            // Readiness Score (Technical & Organizational)
+            const aiMaturityScores = { none: 1, exploring: 3, pilot: 6, production: 8, advanced: 10 };
+            readinessScore += (aiMaturityScores[data.ai_maturity] || 1) * 2;
+            readinessScore += parseInt(data.process_readiness || 5) * 1.5;
+            readinessScore += parseInt(data.data_quality || 5) * 1.5;
+            
+            const changeCaapabilityScores = { resistant: 1, cautious: 4, adaptable: 7, agile: 10 };
+            readinessScore += (changeCaapabilityScores[data.change_capability] || 5);
+            
+            readinessScore += msTech.length * 3; // Microsoft ecosystem bonus
+
+            // Urgency Score (Business Need)
+            urgencyScore += parseInt(data.ambition_level || 5) * 2;
+            urgencyScore += objectives.length * 5;
+            if (data.biggest_challenge && data.biggest_challenge.length > 50) urgencyScore += 10;
+
+            // Impact Score (Use Case Value)
+            const highValueUseCases = ['customer_service', 'sales_support', 'financial_operations', 'workflow_automation'];
+            const highValueCount = useCases.filter(uc => highValueUseCases.includes(uc)).length;
+            impactScore += highValueCount * 15;
+            impactScore += useCases.length * 5;
+
+            const companySizeMultiplier = { startup: 0.8, small: 1, medium: 1.3, large: 1.6 };
+            impactScore *= (companySizeMultiplier[data.company_size] || 1);
+
+            return {
+                readiness: Math.min(100, Math.round(readinessScore)),
+                urgency: Math.min(100, Math.round(urgencyScore)),
+                impact: Math.min(100, Math.round(impactScore))
+            };
+        }
+
+        function generateRecommendations(scores, data, useCases) {
+            const recommendations = {
+                approach: '',
+                timeline: '',
+                firstSteps: [],
+                priority_use_cases: [],
+                investment_range: ''
+            };
+
+            // Determine approach based on scores
+            const avgScore = (scores.readiness + scores.urgency + scores.impact) / 3;
+            
+            if (avgScore >= 75) {
+                recommendations.approach = 'Aggressive Transformation';
+                recommendations.timeline = '2-4 weeks to first results, 8-12 weeks to production';
+                recommendations.investment_range = '£200K - £500K for comprehensive implementation';
+            } else if (avgScore >= 50) {
+                recommendations.approach = 'Strategic Implementation';
+                recommendations.timeline = '4-6 weeks to proof of concept, 12-16 weeks to production';
+                recommendations.investment_range = '£75K - £200K for phased deployment';
+            } else {
+                recommendations.approach = 'Foundation Building';
+                recommendations.timeline = '6-8 weeks for pilot, 16-20 weeks for scaled implementation';
+                recommendations.investment_range = '£25K - £75K for pilot and infrastructure';
+            }
+
+            // Priority use cases based on selection and industry
+            const useCasePriority = {
+                customer_service: { value: 85, complexity: 'Medium' },
+                hr_automation: { value: 75, complexity: 'Low' },
+                sales_support: { value: 90, complexity: 'Medium' },
+                financial_operations: { value: 95, complexity: 'High' },
+                document_processing: { value: 70, complexity: 'Low' },
+                workflow_automation: { value: 80, complexity: 'Medium' },
+                knowledge_search: { value: 65, complexity: 'Low' }
+            };
+
+            recommendations.priority_use_cases = useCases
+                .map(uc => ({ name: uc, ...useCasePriority[uc] }))
+                .filter(uc => uc.value)
+                .sort((a, b) => b.value - a.value)
+                .slice(0, 3);
+
+            // First steps
+            if (scores.readiness < 50) {
+                recommendations.firstSteps = [
+                    'Infrastructure assessment and Microsoft ecosystem optimization',
+                    'Data quality audit and improvement roadmap',
+                    'Change management and training program design'
+                ];
+            } else {
+                recommendations.firstSteps = [
+                    'Executive alignment workshop and vision session',
+                    'Proof of concept development for highest-value use case',
+                    'Technical architecture design and security review'
+                ];
+            }
+
+            return recommendations;
+        }
+
+        function displayResults(scores, recommendations) {
+            const resultsContent = document.getElementById('resultsContent');
+            
+            const getUrgencyClass = (score) => {
+                if (score >= 75) return 'urgency-high';
+                if (score >= 50) return 'urgency-medium';
+                return 'urgency-low';
+            };
+
+            resultsContent.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                    <div class="result-category">
+                        <h3>Technical Readiness</h3>
+                        <div class="score ${getUrgencyClass(scores.readiness)}">${scores.readiness}%</div>
+                        <p>Your organization's capability to implement AI solutions</p>
+                    </div>
+                    <div class="result-category">
+                        <h3>Business Urgency</h3>
+                        <div class="score ${getUrgencyClass(scores.urgency)}">${scores.urgency}%</div>
+                        <p>The strategic importance and timeline pressure for AI adoption</p>
+                    </div>
+                    <div class="result-category">
+                        <h3>Potential Impact</h3>
+                        <div class="score ${getUrgencyClass(scores.impact)}">${scores.impact}%</div>
+                        <p>Expected business value and transformation potential</p>
+                    </div>
+                </div>
+
+                <div class="recommendation">
+                    <h3>🚀 Recommended Approach: ${recommendations.approach}</h3>
+                    <p><strong>Timeline:</strong> ${recommendations.timeline}</p>
+                    <p><strong>Investment Range:</strong> ${recommendations.investment_range}</p>
+                    
+                    <h4>Priority Use Cases:</h4>
+                    <ul>
+                        ${recommendations.priority_use_cases.map(uc => 
+                            `<li><strong>${uc.name.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}:</strong> 
+                             Value Score ${uc.value}%, Complexity: ${uc.complexity}</li>`
+                        ).join('')}
+                    </ul>
+                    
+                    <h4>Immediate Next Steps:</h4>
+                    <ul>
+                        ${recommendations.firstSteps.map(step => `<li>${step}</li>`).join('')}
+                    </ul>
+                    
+                    <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(255, 255, 255, 0.1); border-radius: 10px;">
+                        <h4>🎯 Recommended Action</h4>
+                        <p>Based on your assessment, we recommend scheduling a <strong>Vision Discovery Workshop</strong> 
+                        to dive deeper into your specific requirements and create a detailed implementation roadmap.</p>
+                        <p><strong>Next Step:</strong> Book a 2-hour workshop to transform your AI vision into an actionable plan.</p>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('resultsSection').style.display = 'block';
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Initialize
+        showStep(1);
+    </script>
+</body>
+</html>

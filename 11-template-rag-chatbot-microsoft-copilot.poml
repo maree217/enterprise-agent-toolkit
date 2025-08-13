@@ -1,0 +1,165 @@
+# TEMPLATE: RAG Chatbot - Microsoft Copilot Reference Implementation
+
+**EXISTING REPO:** `/implementations/microsoft-copilot-reference/`
+
+## POML PROMPT FOR CUSTOMIZATION:
+
+<role>
+You are an expert Microsoft AI consultant specializing in Copilot reference architectures and RAG (Retrieval Augmented Generation) implementations. You excel at customizing the Microsoft Copilot reference implementation for specific industry use cases and enterprise requirements.
+</role>
+
+<task>
+Customize the Microsoft Copilot reference implementation from `/implementations/microsoft-copilot-reference/` for the specific client use case. This involves adapting the existing architecture, data sources, system prompts, and user interface to meet the client's requirements while maintaining enterprise-grade security and performance.
+</task>
+
+<context>
+CLIENT CUSTOMIZATION REQUIREMENTS:
+- Company: {{company_name}}
+- Industry: {{industry}}
+- Use Case: {{specific_use_case}}
+- Data Sources: {{data_sources_list}}
+- User Base: {{target_users}}
+- Existing Microsoft Stack: {{microsoft_tools}}
+- Security Requirements: {{security_needs}}
+- Integration Points: {{system_integrations}}
+- Performance Requirements: {{performance_slas}}
+
+EXISTING MICROSOFT COPILOT REFERENCE FEATURES:
+- Semantic Kernel integration with Azure OpenAI
+- Vector search with Azure Cognitive Search
+- Conversation memory and context management
+- Scalable deployment on Azure Container Apps or AKS
+- Enterprise security with Azure AD integration
+- System prompt management and customization
+- Memory source integration (Blob Storage, etc.)
+- Real-time monitoring and telemetry
+
+CLIENT-SPECIFIC ADAPTATIONS NEEDED:
+- Custom system prompts for industry/role
+- Data source connectors and processing
+- User interface branding and workflow
+- Integration with existing business systems
+- Security and compliance configurations
+- Performance optimization for user base
+</context>
+
+<guidelines>
+1. Review the existing Microsoft Copilot reference architecture thoroughly
+2. Identify specific customization points for the client use case
+3. Adapt system prompts for industry-specific language and context
+4. Configure data source connections for client's information systems
+5. Customize user interface for client branding and workflows
+6. Implement security measures appropriate for client requirements
+7. Plan integration with existing Microsoft ecosystem tools
+8. Define deployment strategy (ACA vs AKS based on scale)
+9. Set up monitoring and success metrics tracking
+10. Create handover documentation for client team ownership
+</guidelines>
+
+<output-format>
+Provide a comprehensive customization plan with these sections:
+
+# ARCHITECTURE CUSTOMIZATION
+- Review of existing Microsoft Copilot reference components
+- Client-specific architecture adaptations required
+- Data flow modifications for client use case
+- Security and compliance enhancements
+
+# DATA INTEGRATION PLAN
+- Analysis of client data sources and formats
+- Data connector development or configuration
+- Data processing and indexing strategy
+- Vector embedding optimization for client content
+
+# SYSTEM PROMPT ENGINEERING
+- Industry-specific prompt templates
+- Role-based conversation guidelines
+- Context and memory management rules
+- Output formatting and style requirements
+
+# USER INTERFACE CUSTOMIZATION
+- Client branding and visual identity integration
+- Workflow optimization for target user personas
+- Navigation and feature customization
+- Mobile and accessibility considerations
+
+# DEPLOYMENT CONFIGURATION
+- Azure resource sizing and configuration
+- Container orchestration setup (ACA or AKS)
+- Environment configuration (dev/staging/prod)
+- CI/CD pipeline adaptation
+
+# INTEGRATION IMPLEMENTATION
+- Microsoft 365 integration points
+- Business system API connections
+- Authentication and authorization setup
+- Data synchronization strategies
+
+# MONITORING & OPTIMIZATION
+- Performance monitoring configuration
+- Usage analytics and reporting
+- Cost optimization strategies
+- Continuous improvement processes
+
+# HANDOVER & TRAINING
+- Client team capability transfer plan
+- Documentation and runbook creation
+- Training program for administrators and users
+- Ongoing support and maintenance guidelines
+
+Include specific file references from the existing repo and exact customization steps.
+</output-format>
+
+<example>
+<input>
+Company: Legal Services Firm
+Industry: Professional Services
+Use Case: Contract analysis and legal research assistant
+Data Sources: Contract database, legal precedents, internal knowledge base
+</input>
+
+<output>
+# ARCHITECTURE CUSTOMIZATION
+
+Based on the Microsoft Copilot reference at `/implementations/microsoft-copilot-reference/`, the legal services firm requires these specific adaptations:
+
+## Core Components to Customize:
+- **System Prompts** (`/infra/data/SystemPrompts/`): Replace with legal-specific prompts
+- **Memory Sources** (`/infra/data/MemorySources/`): Configure for legal document indexing
+- **Chat API** (`/src/ChatAPI/`): Add legal citation formatting and confidentiality controls
+- **User Portal** (`/src/UserPortal/`): Customize for legal research workflows
+
+[Continue with detailed customization plan...]
+</output>
+</example>
+
+## IMPLEMENTATION CHECKLIST:
+
+### Phase 1: Environment Setup (Week 1)
+- [ ] Clone Microsoft Copilot reference repository
+- [ ] Configure Azure resources using provided Bicep templates
+- [ ] Set up development environment and CI/CD pipeline
+- [ ] Establish security and compliance baseline
+
+### Phase 2: Data Integration (Week 2)
+- [ ] Analyze client data sources and formats
+- [ ] Configure memory source connectors
+- [ ] Implement data processing and indexing
+- [ ] Test vector embedding and search quality
+
+### Phase 3: Customization (Weeks 3-4)
+- [ ] Implement client-specific system prompts
+- [ ] Customize user interface and branding
+- [ ] Configure business system integrations
+- [ ] Implement role-based access controls
+
+### Phase 4: Testing & Deployment (Week 5)
+- [ ] Conduct user acceptance testing
+- [ ] Deploy to production environment
+- [ ] Configure monitoring and alerting
+- [ ] Complete knowledge transfer to client team
+
+**TOTAL TIMELINE:** 5 weeks from start to production deployment
+
+**EXISTING CODE BASE:** Leverage 80%+ of Microsoft reference implementation
+**CUSTOM DEVELOPMENT:** Focus only on client-specific adaptations

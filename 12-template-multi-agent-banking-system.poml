@@ -1,0 +1,193 @@
+# TEMPLATE: Multi-Agent Banking System
+
+**EXISTING REPO:** `/implementations/banking-multi-agent-demo/`
+
+## POML PROMPT FOR CUSTOMIZATION:
+
+<role>
+You are a senior financial services AI consultant specializing in multi-agent banking systems and financial automation. You excel at adapting banking agent frameworks for different financial institutions, regulatory environments, and use cases while ensuring compliance and security.
+</role>
+
+<task>
+Customize the banking multi-agent demo from `/implementations/banking-multi-agent-demo/` for a specific financial institution's requirements. This involves adapting the agent orchestration, financial data models, compliance controls, and business logic while maintaining regulatory compliance and enterprise security standards.
+</task>
+
+<context>
+CLIENT CUSTOMIZATION REQUIREMENTS:
+- Institution Type: {{institution_type}} (Bank/Credit Union/Fintech/Insurance)
+- Regulatory Environment: {{regulatory_requirements}} (FCA/SEC/PCI-DSS/GDPR)
+- Primary Use Cases: {{banking_use_cases}}
+- Customer Base: {{customer_segments}}
+- Existing Core Systems: {{core_banking_systems}}
+- Integration Requirements: {{system_integrations}}
+- Compliance Requirements: {{compliance_needs}}
+- Risk Tolerance: {{risk_profile}}
+- Scale Requirements: {{transaction_volume}}
+
+EXISTING BANKING MULTI-AGENT FEATURES:
+- Account management agent with balance and transaction queries
+- Loan processing agent with application and approval workflows
+- Investment advisory agent with portfolio recommendations
+- Customer service agent with multi-channel support
+- Fraud detection agent with real-time monitoring
+- Orchestration framework using Semantic Kernel
+- Workshop modules for implementation guidance
+- Both C# and Python implementations available
+
+ADAPTATION AREAS:
+- Financial product catalog and rules
+- Regulatory compliance and audit trails
+- Risk assessment and fraud detection
+- Customer interaction patterns
+- Integration with core banking systems
+- Multi-language and regional support
+</context>
+
+<guidelines>
+1. Analyze the existing banking agent architecture and components
+2. Map client's financial products to agent capabilities
+3. Adapt compliance and regulatory controls for jurisdiction
+4. Customize risk assessment and fraud detection rules
+5. Configure integration with existing core banking systems
+6. Implement customer-specific business rules and workflows
+7. Enhance security measures for financial data protection
+8. Set up monitoring and audit trail requirements
+9. Plan deployment strategy for high availability and scalability
+10. Create institution-specific training and documentation
+</guidelines>
+
+<output-format>
+Provide a comprehensive banking system customization plan with these sections:
+
+# FINANCIAL INSTITUTION ANALYSIS
+- Institution type and regulatory environment assessment
+- Current system landscape and integration requirements
+- Customer segments and service delivery channels
+- Compliance and risk management requirements
+
+# AGENT ARCHITECTURE ADAPTATION
+- Review of existing banking agents and capabilities
+- Institution-specific agent modifications required
+- New agent development for unique requirements
+- Agent orchestration and workflow customization
+
+# FINANCIAL PRODUCT CONFIGURATION
+- Product catalog mapping and rule configuration
+- Pricing and eligibility criteria implementation
+- Application and approval workflow customization
+- Integration with existing product management systems
+
+# COMPLIANCE & SECURITY IMPLEMENTATION
+- Regulatory compliance framework adaptation
+- Audit trail and reporting requirements
+- Data privacy and protection measures
+- Risk assessment and fraud detection customization
+
+# CORE SYSTEM INTEGRATION
+- Analysis of existing core banking systems
+- API integration strategy and implementation
+- Data synchronization and consistency management
+- Transaction processing and settlement integration
+
+# CUSTOMER EXPERIENCE OPTIMIZATION
+- Multi-channel support configuration
+- Customer journey and interaction design
+- Personalization and recommendation engines
+- Accessibility and inclusion requirements
+
+# DEPLOYMENT & SCALABILITY
+- Infrastructure requirements and sizing
+- High availability and disaster recovery setup
+- Performance optimization and load balancing
+- Monitoring and operational support configuration
+
+# REGULATORY COMPLIANCE FRAMEWORK
+- Jurisdiction-specific compliance implementation
+- Audit trail and reporting automation
+- Risk management and control frameworks
+- Data governance and privacy protection
+
+# TESTING & VALIDATION
+- Financial transaction testing scenarios
+- Compliance and security validation
+- User acceptance testing with bank staff
+- Regulatory approval and certification process
+
+# TRAINING & HANDOVER
+- Bank staff training and certification program
+- Operational runbook and documentation
+- Support and maintenance procedures
+- Continuous improvement and update processes
+
+Include specific references to existing code modules and exact customization requirements.
+</output-format>
+
+<example>
+<input>
+Institution Type: Regional Credit Union
+Regulatory Environment: NCUA, GDPR
+Use Cases: Member services, loan processing, financial wellness
+Customer Base: 50K members, community-focused
+Core Systems: Legacy core banking, online banking platform
+</input>
+
+<output>
+# FINANCIAL INSTITUTION ANALYSIS
+
+Based on the banking multi-agent demo at `/implementations/banking-multi-agent-demo/`, this regional credit union requires these specific adaptations:
+
+## Institution Characteristics:
+- **Member-Owned Structure**: Adapt agent language from "customers" to "members"
+- **Community Focus**: Implement local market knowledge and community program integration
+- **Credit Union Regulations**: NCUA compliance vs traditional banking regulations
+- **Cooperative Values**: Integrate member benefit focus vs profit maximization
+
+## Existing Components to Adapt:
+- **Account Agent** (`/src/agents/AccountAgent`): Add member-specific services and benefits
+- **Loan Agent** (`/src/agents/LoanAgent`): Implement credit union lending criteria and member rates
+- **Advisory Agent** (`/src/agents/AdvisoryAgent`): Focus on financial wellness vs wealth management
+- **Workshop Modules** (`/workshop/`): Customize for credit union context and regulations
+
+[Continue with detailed customization plan...]
+</output>
+</example>
+
+## IMPLEMENTATION CHECKLIST:
+
+### Phase 1: Institution Assessment & Planning (Week 1)
+- [ ] Analyze current core banking systems and APIs
+- [ ] Review regulatory requirements and compliance frameworks
+- [ ] Map existing financial products to agent capabilities
+- [ ] Define integration architecture and data flows
+
+### Phase 2: Agent Customization (Weeks 2-3)
+- [ ] Adapt existing agents for institution-specific products
+- [ ] Implement custom business rules and workflows
+- [ ] Configure compliance and audit trail requirements
+- [ ] Develop institution-specific training data and prompts
+
+### Phase 3: Integration Development (Weeks 4-5)
+- [ ] Implement core banking system connectors
+- [ ] Configure real-time data synchronization
+- [ ] Set up transaction processing integration
+- [ ] Implement security and authentication frameworks
+
+### Phase 4: Compliance & Testing (Weeks 6-7)
+- [ ] Conduct compliance validation and audit preparation
+- [ ] Perform security penetration testing
+- [ ] Execute user acceptance testing with bank staff
+- [ ] Complete regulatory review and approval process
+
+### Phase 5: Deployment & Training (Week 8)
+- [ ] Deploy to production environment
+- [ ] Conduct staff training and certification
+- [ ] Establish monitoring and support procedures
+- [ ] Complete knowledge transfer and handover
+
+**TOTAL TIMELINE:** 8 weeks from assessment to production deployment
+
+**EXISTING CODE LEVERAGE:** 70%+ of banking demo framework
+**CUSTOM DEVELOPMENT:** Institution-specific business logic and integrations
+
+**REGULATORY COMPLIANCE:** Built-in audit trails and compliance frameworks
+**SECURITY:** Enterprise-grade financial data protection and fraud detection

@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent ROI Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0066cc;
+            --primary-dark: #0052a3;
+            --success-color: #198754;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --border-color: #dee2e6;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: var(--bg-primary);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        }
+
+        .form-group .help-text {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .results-card {
+            grid-column: 1 / -1;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-value.positive {
+            color: var(--success-color);
+        }
+
+        .metric-value.negative {
+            color: var(--danger-color);
+        }
+
+        .metric-value.warning {
+            color: var(--warning-color);
+        }
+
+        .metric-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .chart-container {
+            height: 300px;
+            margin: 2rem 0;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+        }
+
+        .btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .assumptions {
+            background: #f0f4ff;
+            border: 1px solid #c7d2fe;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .assumptions h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .assumptions ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .assumptions li {
+            padding: 0.25rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .assumptions li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .comparison-table th {
+            background: var(--bg-secondary);
+            font-weight: 600;
+        }
+
+        .comparison-table .current {
+            color: var(--danger-color);
+        }
+
+        .comparison-table .future {
+            color: var(--success-color);
+        }
+
+        @media (max-width: 768px) {
+            .calculator-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        .export-buttons {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-calculator"></i> AI Agent ROI Calculator</h1>
+            <p>Calculate the return on investment for your AI agent implementation. Get instant insights into cost savings, efficiency gains, and business value.</p>
+        </div>
+
+        <div class="calculator-grid">
+            <!-- Current State Input -->
+            <div class="card">
+                <h2><i class="fas fa-chart-line"></i> Current Process</h2>
+                
+                <div class="form-group">
+                    <label for="process-name">Process Name</label>
+                    <input type="text" id="process-name" placeholder="e.g., Customer Support Tickets">
+                    <div class="help-text">What process are you considering for automation?</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="volume-per-day">Volume per Day</label>
+                    <input type="number" id="volume-per-day" placeholder="100" value="100">
+                    <div class="help-text">How many transactions/requests per day?</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="time-per-task">Time per Task (minutes)</label>
+                    <input type="number" id="time-per-task" placeholder="15" value="15">
+                    <div class="help-text">Average time to complete one task</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="hourly-rate">Hourly Rate ($)</label>
+                    <input type="number" id="hourly-rate" placeholder="50" value="50">
+                    <div class="help-text">Average hourly cost of employees handling this</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="error-rate">Error Rate (%)</label>
+                    <input type="number" id="error-rate" placeholder="10" value="10" min="0" max="100">
+                    <div class="help-text">Percentage of tasks requiring rework</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="systems-involved">Systems Involved</label>
+                    <input type="number" id="systems-involved" placeholder="3" value="3">
+                    <div class="help-text">Number of different systems used</div>
+                </div>
+            </div>
+
+            <!-- Agent Solution Input -->
+            <div class="card">
+                <h2><i class="fas fa-robot"></i> Agent Solution</h2>
+
+                <div class="form-group">
+                    <label for="agent-type">Agent Type</label>
+                    <select id="agent-type">
+                        <option value="simple">Simple Q&A Bot</option>
+                        <option value="classifier">Document Classifier</option>
+                        <option value="workflow">Workflow Automation</option>
+                        <option value="multiagent">Multi-Agent System</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="automation-rate">Automation Rate (%)</label>
+                    <input type="number" id="automation-rate" placeholder="70" value="70" min="0" max="100">
+                    <div class="help-text">Percentage of tasks the agent can handle</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="agent-accuracy">Agent Accuracy (%)</label>
+                    <input type="number" id="agent-accuracy" placeholder="95" value="95" min="0" max="100">
+                    <div class="help-text">Expected accuracy rate of the agent</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="implementation-cost">Implementation Cost ($)</label>
+                    <input type="number" id="implementation-cost" placeholder="25000" value="25000">
+                    <div class="help-text">One-time cost to build and deploy</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="monthly-cost">Monthly Operating Cost ($)</label>
+                    <input type="number" id="monthly-cost" placeholder="500" value="500">
+                    <div class="help-text">Ongoing Azure and maintenance costs</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="response-time">Response Time (seconds)</label>
+                    <input type="number" id="response-time" placeholder="2" value="2">
+                    <div class="help-text">Average agent response time</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div class="card results-card">
+            <h2><i class="fas fa-chart-bar"></i> ROI Analysis Results</h2>
+            
+            <div class="metrics-grid">
+                <div class="metric">
+                    <div class="metric-value positive" id="annual-savings">-</div>
+                    <div class="metric-label">Annual Savings</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value positive" id="roi-percentage">-</div>
+                    <div class="metric-label">ROI %</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" id="payback-months">-</div>
+                    <div class="metric-label">Payback Period (Months)</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value positive" id="efficiency-gain">-</div>
+                    <div class="metric-label">Efficiency Gain</div>
+                </div>
+            </div>
+
+            <!-- Comparison Table -->
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th class="current">Current State</th>
+                        <th class="future">With AI Agent</th>
+                        <th>Improvement</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Daily Processing Time</td>
+                        <td class="current" id="current-daily-time">-</td>
+                        <td class="future" id="future-daily-time">-</td>
+                        <td id="time-improvement">-</td>
+                    </tr>
+                    <tr>
+                        <td>Annual Labor Cost</td>
+                        <td class="current" id="current-annual-cost">-</td>
+                        <td class="future" id="future-annual-cost">-</td>
+                        <td id="cost-improvement">-</td>
+                    </tr>
+                    <tr>
+                        <td>Error Rate</td>
+                        <td class="current" id="current-error-rate">-</td>
+                        <td class="future" id="future-error-rate">-</td>
+                        <td id="error-improvement">-</td>
+                    </tr>
+                    <tr>
+                        <td>Tasks per Hour</td>
+                        <td class="current" id="current-throughput">-</td>
+                        <td class="future" id="future-throughput">-</td>
+                        <td id="throughput-improvement">-</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Assumptions -->
+            <div class="assumptions">
+                <h3>Key Assumptions</h3>
+                <ul>
+                    <li>Agent operates 24/7 with 99.9% uptime</li>
+                    <li>Implementation includes training and change management</li>
+                    <li>Costs include Azure services, monitoring, and support</li>
+                    <li>Human agents are redeployed to higher-value work</li>
+                    <li>Error rates improve due to consistent processing</li>
+                    <li>Savings compound over time as volume increases</li>
+                </ul>
+            </div>
+
+            <!-- Export Options -->
+            <div class="export-buttons">
+                <button class="btn" onclick="generateReport()">
+                    <i class="fas fa-file-pdf"></i> Generate PDF Report
+                </button>
+                <button class="btn btn-outline" onclick="exportToExcel()">
+                    <i class="fas fa-file-excel"></i> Export to Excel
+                </button>
+                <button class="btn btn-outline" onclick="shareResults()">
+                    <i class="fas fa-share"></i> Share Results
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ROI Calculator Logic
+        class ROICalculator {
+            constructor() {
+                this.bindEvents();
+                this.calculate();
+            }
+
+            bindEvents() {
+                // Add event listeners to all inputs
+                const inputs = document.querySelectorAll('input, select');
+                inputs.forEach(input => {
+                    input.addEventListener('input', () => this.calculate());
+                });
+            }
+
+            calculate() {
+                // Get input values
+                const volumePerDay = parseFloat(document.getElementById('volume-per-day').value) || 0;
+                const timePerTask = parseFloat(document.getElementById('time-per-task').value) || 0;
+                const hourlyRate = parseFloat(document.getElementById('hourly-rate').value) || 0;
+                const errorRate = parseFloat(document.getElementById('error-rate').value) || 0;
+                const automationRate = parseFloat(document.getElementById('automation-rate').value) || 0;
+                const agentAccuracy = parseFloat(document.getElementById('agent-accuracy').value) || 0;
+                const implementationCost = parseFloat(document.getElementById('implementation-cost').value) || 0;
+                const monthlyCost = parseFloat(document.getElementById('monthly-cost').value) || 0;
+                const responseTime = parseFloat(document.getElementById('response-time').value) || 0;
+
+                // Calculate current state metrics
+                const dailyHours = (volumePerDay * timePerTask) / 60;
+                const annualHours = dailyHours * 365;
+                const annualLaborCost = annualHours * hourlyRate;
+                const reworkCost = annualLaborCost * (errorRate / 100);
+                const totalCurrentCost = annualLaborCost + reworkCost;
+
+                // Calculate future state metrics
+                const automatedTasks = volumePerDay * (automationRate / 100);
+                const remainingManualTasks = volumePerDay - automatedTasks;
+                const futureManualHours = (remainingManualTasks * timePerTask) / 60;
+                const futureAnnualManualCost = futureManualHours * 365 * hourlyRate;
+                const futureReworkRate = ((100 - agentAccuracy) / 100);
+                const futureReworkCost = futureAnnualManualCost * futureReworkRate;
+                const agentAnnualCost = monthlyCost * 12;
+                const totalFutureCost = futureAnnualManualCost + futureReworkCost + agentAnnualCost;
+
+                // Calculate ROI metrics
+                const annualSavings = totalCurrentCost - totalFutureCost;
+                const roiPercentage = ((annualSavings - implementationCost) / implementationCost) * 100;
+                const paybackMonths = implementationCost / (annualSavings / 12);
+                const efficiencyGain = ((dailyHours - futureManualHours) / dailyHours) * 100;
+
+                // Update display
+                this.updateDisplay({
+                    annualSavings,
+                    roiPercentage,
+                    paybackMonths,
+                    efficiencyGain,
+                    currentDailyTime: dailyHours,
+                    futureDailyTime: futureManualHours,
+                    currentAnnualCost: totalCurrentCost,
+                    futureAnnualCost: totalFutureCost,
+                    currentErrorRate: errorRate,
+                    futureErrorRate: futureReworkRate * 100,
+                    currentThroughput: 60 / timePerTask,
+                    futureThroughput: responseTime > 0 ? 3600 / responseTime : 1800
+                });
+            }
+
+            updateDisplay(metrics) {
+                // Update main metrics
+                document.getElementById('annual-savings').textContent = this.formatCurrency(metrics.annualSavings);
+                document.getElementById('roi-percentage').textContent = this.formatPercentage(metrics.roiPercentage);
+                document.getElementById('payback-months').textContent = this.formatNumber(metrics.paybackMonths, 1);
+                document.getElementById('efficiency-gain').textContent = this.formatPercentage(metrics.efficiencyGain);
+
+                // Update comparison table
+                document.getElementById('current-daily-time').textContent = this.formatHours(metrics.currentDailyTime);
+                document.getElementById('future-daily-time').textContent = this.formatHours(metrics.futureDailyTime);
+                document.getElementById('time-improvement').textContent = this.formatPercentage(
+                    ((metrics.currentDailyTime - metrics.futureDailyTime) / metrics.currentDailyTime) * 100
+                );
+
+                document.getElementById('current-annual-cost').textContent = this.formatCurrency(metrics.currentAnnualCost);
+                document.getElementById('future-annual-cost').textContent = this.formatCurrency(metrics.futureAnnualCost);
+                document.getElementById('cost-improvement').textContent = this.formatCurrency(
+                    metrics.currentAnnualCost - metrics.futureAnnualCost
+                );
+
+                document.getElementById('current-error-rate').textContent = this.formatPercentage(metrics.currentErrorRate);
+                document.getElementById('future-error-rate').textContent = this.formatPercentage(metrics.futureErrorRate);
+                document.getElementById('error-improvement').textContent = this.formatPercentage(
+                    metrics.currentErrorRate - metrics.futureErrorRate
+                );
+
+                document.getElementById('current-throughput').textContent = this.formatNumber(metrics.currentThroughput, 1) + '/hour';
+                document.getElementById('future-throughput').textContent = this.formatNumber(metrics.futureThroughput, 0) + '/hour';
+                document.getElementById('throughput-improvement').textContent = this.formatPercentage(
+                    ((metrics.futureThroughput - metrics.currentThroughput) / metrics.currentThroughput) * 100
+                );
+
+                // Update metric colors based on values
+                this.updateMetricColors(metrics);
+            }
+
+            updateMetricColors(metrics) {
+                const elements = {
+                    'annual-savings': metrics.annualSavings,
+                    'roi-percentage': metrics.roiPercentage,
+                    'payback-months': -metrics.paybackMonths, // Negative because lower is better
+                    'efficiency-gain': metrics.efficiencyGain
+                };
+
+                Object.keys(elements).forEach(id => {
+                    const element = document.getElementById(id);
+                    const value = elements[id];
+                    
+                    element.className = 'metric-value';
+                    if (value > 0) {
+                        element.classList.add('positive');
+                    } else if (value < 0) {
+                        element.classList.add('negative');
+                    } else {
+                        element.classList.add('warning');
+                    }
+                });
+            }
+
+            formatCurrency(value) {
+                return new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }).format(value);
+            }
+
+            formatPercentage(value) {
+                return new Intl.NumberFormat('en-US', {
+                    style: 'percent',
+                    minimumFractionDigits: 1,
+                    maximumFractionDigits: 1
+                }).format(value / 100);
+            }
+
+            formatNumber(value, decimals = 0) {
+                return new Intl.NumberFormat('en-US', {
+                    minimumFractionDigits: decimals,
+                    maximumFractionDigits: decimals
+                }).format(value);
+            }
+
+            formatHours(hours) {
+                if (hours < 1) {
+                    return (hours * 60).toFixed(0) + ' min';
+                }
+                return hours.toFixed(1) + ' hrs';
+            }
+        }
+
+        // Export Functions
+        function generateReport() {
+            // Create a printable version
+            window.print();
+        }
+
+        function exportToExcel() {
+            // Generate CSV data
+            const csvData = this.generateCSVData();
+            const blob = new Blob([csvData], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'ai_agent_roi_analysis.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function shareResults() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'AI Agent ROI Analysis',
+                    text: 'Check out this ROI analysis for AI agent implementation',
+                    url: window.location.href
+                });
+            } else {
+                // Fallback - copy to clipboard
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    alert('Link copied to clipboard!');
+                });
+            }
+        }
+
+        function generateCSVData() {
+            const processName = document.getElementById('process-name').value || 'AI Agent Process';
+            const data = [
+                ['AI Agent ROI Analysis Report'],
+                ['Process Name', processName],
+                ['Generated', new Date().toLocaleDateString()],
+                [''],
+                ['Metric', 'Current State', 'With AI Agent', 'Improvement'],
+                ['Annual Cost', document.getElementById('current-annual-cost').textContent, document.getElementById('future-annual-cost').textContent, document.getElementById('cost-improvement').textContent],
+                ['Daily Processing Time', document.getElementById('current-daily-time').textContent, document.getElementById('future-daily-time').textContent, document.getElementById('time-improvement').textContent],
+                ['Error Rate', document.getElementById('current-error-rate').textContent, document.getElementById('future-error-rate').textContent, document.getElementById('error-improvement').textContent],
+                [''],
+                ['Key Results'],
+                ['Annual Savings', document.getElementById('annual-savings').textContent],
+                ['ROI Percentage', document.getElementById('roi-percentage').textContent],
+                ['Payback Period', document.getElementById('payback-months').textContent + ' months'],
+                ['Efficiency Gain', document.getElementById('efficiency-gain').textContent]
+            ];
+            
+            return data.map(row => row.join(',')).join('\n');
+        }
+
+        // Initialize calculator when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new ROICalculator();
+        });
+    </script>
+</body>
+</html>

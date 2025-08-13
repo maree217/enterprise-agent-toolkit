@@ -1,0 +1,70 @@
+categories:
+  invoice:
+    description: "Vendor invoices, bills, and payment requests"
+    confidence_threshold: 0.8
+    routing: "finance_team"
+    required_fields: ["amount", "vendor", "date"]
+    keywords: ["invoice", "bill", "payment", "amount due", "vendor", "total", "net amount"]
+    
+  contract:
+    description: "Legal contracts, agreements, and terms"
+    confidence_threshold: 0.9
+    routing: "legal_team"
+    required_fields: ["parties", "terms", "duration"]
+    keywords: ["agreement", "contract", "terms", "party", "whereas", "hereby", "witnesseth"]
+    
+  email:
+    description: "Email communications and correspondence"
+    confidence_threshold: 0.7
+    routing: "communication_team"
+    required_fields: ["subject", "sender", "recipient"]
+    keywords: ["from:", "to:", "subject:", "dear", "sincerely", "regards", "cc:", "bcc:"]
+    
+  resume:
+    description: "Job applications, resumes, and CVs"
+    confidence_threshold: 0.8
+    routing: "hr_team"
+    required_fields: ["name", "experience", "education"]
+    keywords: ["resume", "cv", "experience", "education", "skills", "employment", "qualifications"]
+    
+  report:
+    description: "Business reports, analytics, and research documents"
+    confidence_threshold: 0.8
+    routing: "analytics_team"
+    required_fields: ["title", "date", "summary"]
+    keywords: ["report", "analysis", "summary", "findings", "conclusion", "executive summary"]
+    
+  legal_document:
+    description: "Legal filings, court documents, and legal correspondence"
+    confidence_threshold: 0.9
+    routing: "legal_team"
+    required_fields: ["case_number", "court", "parties"]
+    keywords: ["plaintiff", "defendant", "court", "case", "motion", "brief", "petition"]
+    
+  financial_statement:
+    description: "Financial statements, balance sheets, and financial reports"
+    confidence_threshold: 0.85
+    routing: "finance_team"
+    required_fields: ["period", "company", "amounts"]
+    keywords: ["balance sheet", "income statement", "cash flow", "assets", "liabilities", "revenue"]
+    
+  purchase_order:
+    description: "Purchase orders and procurement documents"
+    confidence_threshold: 0.8
+    routing: "procurement_team"
+    required_fields: ["po_number", "vendor", "items"]
+    keywords: ["purchase order", "po number", "procurement", "vendor", "supplier", "items"]
+    
+  insurance_claim:
+    description: "Insurance claims and related documentation"
+    confidence_threshold: 0.85
+    routing: "insurance_team"
+    required_fields: ["claim_number", "incident_date", "claimant"]
+    keywords: ["claim", "policy", "incident", "damage", "coverage", "deductible"]
+    
+  medical_record:
+    description: "Medical records, test results, and healthcare documents"
+    confidence_threshold: 0.9
+    routing: "medical_team"
+    required_fields: ["patient", "date", "provider"]
+    keywords: ["patient", "diagnosis", "treatment", "medical", "doctor", "hospital", "medication"]

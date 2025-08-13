@@ -1,0 +1,181 @@
+# TEMPLATE: Data Mining Agent - Level 2 Analytics
+
+**EXISTING REPO:** `/implementations/semantic-kernel-learning/`
+
+## POML PROMPT FOR DEVELOPMENT:
+
+<role>
+You are a senior data scientist and AI engineer specializing in autonomous data analysis and pattern discovery. You excel at building AI agents that can independently explore datasets, discover hidden patterns, and generate business insights that humans typically miss. You understand both statistical methods and modern LLM capabilities for data interpretation.
+</role>
+
+<task>
+Create a comprehensive Level 2 Data Mining Agent that autonomously analyzes business data to discover patterns, anomalies, and opportunities. This agent should go beyond simple reporting to actual intelligence generation, using the Semantic Kernel learning examples as a foundation but extending to sophisticated analytical capabilities.
+</task>
+
+<context>
+AGENT REQUIREMENTS:
+- Autonomous data exploration without predefined queries
+- Pattern discovery across multiple data sources
+- Anomaly detection and trend identification  
+- Business insight generation with explanations
+- Predictive modeling and forecasting
+- Natural language reporting of findings
+- Integration with existing business intelligence systems
+- Continuous learning and model improvement
+
+BUSINESS CONTEXT:
+- Data Sources: {{data_sources}}
+- Analysis Objectives: {{business_goals}}
+- Industry Context: {{industry_domain}}
+- Existing BI Tools: {{current_tools}}
+- Decision Makers: {{stakeholder_roles}}
+- Reporting Frequency: {{reporting_schedule}}
+- Compliance Requirements: {{data_governance}}
+
+TECHNICAL FOUNDATION:
+- Semantic Kernel agent framework (`/implementations/semantic-kernel-learning/`)
+- Azure Machine Learning integration
+- Power BI connector for visualization
+- Multiple data connector support
+- Statistical analysis libraries integration
+- Pattern recognition algorithms
+</context>
+
+<guidelines>
+1. Design autonomous data exploration capabilities
+2. Implement pattern discovery algorithms for business contexts
+3. Create natural language insight generation
+4. Build predictive modeling with explanation capabilities  
+5. Integrate with existing BI tools and data sources
+6. Implement continuous learning and model improvement
+7. Create business-friendly reporting and visualization
+8. Ensure data privacy and governance compliance
+9. Build monitoring and performance tracking
+10. Design for scalability across multiple data sources
+</guidelines>
+
+<output-format>
+Create a comprehensive data mining agent specification with these sections:
+
+# AGENT ARCHITECTURE DESIGN
+- Core data mining agent components and workflow
+- Integration with Semantic Kernel framework
+- Data source connector architecture
+- Pattern discovery and analysis engine design
+
+# AUTONOMOUS EXPLORATION ENGINE
+- Data discovery and profiling capabilities
+- Unsupervised pattern detection algorithms
+- Anomaly detection and outlier identification
+- Trend analysis and seasonal pattern recognition
+
+# BUSINESS INTELLIGENCE INTEGRATION
+- Natural language insight generation
+- Business context interpretation
+- KPI correlation and impact analysis
+- Predictive modeling and forecasting
+
+# PATTERN DISCOVERY ALGORITHMS
+- Statistical correlation analysis
+- Time series pattern recognition
+- Customer segmentation and behavior analysis
+- Process optimization opportunity identification
+
+# INSIGHT GENERATION & REPORTING
+- Natural language explanation of findings
+- Business impact assessment and prioritization
+- Actionable recommendation generation
+- Executive summary and detailed report creation
+
+# CONTINUOUS LEARNING FRAMEWORK
+- Model performance monitoring and improvement
+- New pattern learning and incorporation
+- Feedback integration from business users
+- Adaptation to changing business conditions
+
+# DATA GOVERNANCE & COMPLIANCE
+- Privacy protection and data anonymization
+- Audit trail and lineage tracking
+- Bias detection and mitigation
+- Compliance with data governance policies
+
+# INTEGRATION ARCHITECTURE
+- Connection to existing data warehouses and lakes
+- Real-time and batch processing capabilities
+- Power BI and dashboard integration
+- API endpoints for external system access
+
+# DEPLOYMENT & SCALING
+- Cloud infrastructure requirements
+- Performance optimization strategies
+- Multi-tenant and enterprise scaling
+- Monitoring and operational support
+
+# BUSINESS VALUE MEASUREMENT
+- Success metrics and KPI tracking
+- ROI measurement and reporting
+- User adoption and satisfaction tracking
+- Business outcome correlation analysis
+
+Provide specific implementation details, code structure references, and integration specifications.
+</output-format>
+
+<example>
+<input>
+Data Sources: Sales CRM, ERP, customer support tickets, web analytics
+Analysis Objectives: Revenue optimization, customer retention, operational efficiency
+Industry: B2B Software Company
+</input>
+
+<output>
+# AGENT ARCHITECTURE DESIGN
+
+Building on Semantic Kernel learning examples from `/implementations/semantic-kernel-learning/`, the data mining agent requires these core components:
+
+## Core Agent Components:
+- **Data Explorer Agent**: Autonomous data source discovery and profiling
+- **Pattern Discovery Agent**: Multi-dimensional correlation and trend analysis  
+- **Insight Generator Agent**: Business context interpretation and recommendation engine
+- **Report Writer Agent**: Natural language business reporting
+
+## Integration Points:
+- **Semantic Kernel Framework**: Base agent orchestration and memory management
+- **Azure ML Pipeline**: Statistical analysis and machine learning models
+- **Power BI Service**: Visualization and dashboard integration
+- **Data Factory**: ETL and data pipeline management
+
+[Continue with detailed technical specification...]
+</output>
+</example>
+
+## DEVELOPMENT PHASES:
+
+### Phase 1: Foundation Setup (Weeks 1-2)
+- [ ] Extend Semantic Kernel learning examples for data analysis
+- [ ] Implement data source connectors and profiling
+- [ ] Build basic pattern discovery algorithms
+- [ ] Create data exploration and visualization framework
+
+### Phase 2: Intelligence Engine (Weeks 3-4)  
+- [ ] Develop autonomous pattern discovery capabilities
+- [ ] Implement anomaly detection and trend analysis
+- [ ] Build correlation analysis and impact assessment
+- [ ] Create business context interpretation layer
+
+### Phase 3: Insight Generation (Weeks 5-6)
+- [ ] Implement natural language insight generation
+- [ ] Build recommendation engine and prioritization
+- [ ] Create executive reporting and dashboard integration
+- [ ] Develop continuous learning and improvement framework
+
+### Phase 4: Integration & Deployment (Weeks 7-8)
+- [ ] Integrate with existing BI tools and data sources
+- [ ] Implement monitoring and performance tracking
+- [ ] Conduct testing and validation with business stakeholders
+- [ ] Deploy to production and establish operational support
+
+**TOTAL DEVELOPMENT TIME:** 8 weeks from concept to production
+
+**FOUNDATION LEVERAGE:** Build on Semantic Kernel learning examples (60% code reuse)
+**CUSTOM DEVELOPMENT:** Business-specific pattern discovery and insight generation
+**COMPETITIVE ADVANTAGE:** Autonomous intelligence that discovers what humans miss

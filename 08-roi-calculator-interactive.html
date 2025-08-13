@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Implementation ROI Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #2c3e50;
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #1e3c72, #2a5298);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .input-section {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 5px solid #1e3c72;
+        }
+
+        .results-section {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #1e3c72;
+            box-shadow: 0 0 0 3px rgba(30, 60, 114, 0.1);
+        }
+
+        .slider-group {
+            margin: 1rem 0;
+        }
+
+        .slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 5px;
+            background: #e9ecef;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #1e3c72;
+            cursor: pointer;
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+
+        .result-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .result-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .breakdown {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+
+        .breakdown h3 {
+            margin-bottom: 1rem;
+            color: #FFD700;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .level-selector {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .level-btn {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid #1e3c72;
+            background: white;
+            color: #1e3c72;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .level-btn.active {
+            background: #1e3c72;
+            color: white;
+        }
+
+        .assumptions {
+            background: #e3f2fd;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+            border-left: 5px solid #2196f3;
+        }
+
+        .assumptions h3 {
+            color: #1976d2;
+            margin-bottom: 1rem;
+        }
+
+        .assumptions ul {
+            color: #424242;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .calculator-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .level-selector {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 AI Implementation ROI Calculator</h1>
+            <p>Calculate your potential return on investment for AI agent implementation</p>
+        </div>
+
+        <div class="level-selector">
+            <button class="level-btn active" onclick="selectLevel(1)">
+                Level 1: Quick Wins<br>
+                <small>2-4 weeks to results</small>
+            </button>
+            <button class="level-btn" onclick="selectLevel(2)">
+                Level 2: Analytics<br>
+                <small>3-6 months to insights</small>
+            </button>
+            <button class="level-btn" onclick="selectLevel(3)">
+                Level 3: Transformation<br>
+                <small>6-18 months to revolution</small>
+            </button>
+        </div>
+
+        <div class="calculator-grid">
+            <div class="input-section">
+                <h2>📊 Your Organization</h2>
+                
+                <div class="form-group">
+                    <label>Number of Employees</label>
+                    <input type="number" id="employees" class="form-control" value="100" min="10" max="10000" onchange="calculateROI()">
+                </div>
+
+                <div class="form-group">
+                    <label>Average Annual Salary (£)</label>
+                    <input type="number" id="avgSalary" class="form-control" value="50000" min="20000" max="150000" onchange="calculateROI()">
+                </div>
+
+                <div class="form-group">
+                    <label>Percentage of Time on Automatable Tasks</label>
+                    <div class="slider-group">
+                        <input type="range" id="automatableTime" class="slider" min="10" max="80" value="40" onchange="calculateROI()">
+                        <div class="slider-labels">
+                            <span>10%</span>
+                            <span id="automatableValue">40%</span>
+                            <span>80%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Expected Automation Success Rate</label>
+                    <div class="slider-group">
+                        <input type="range" id="successRate" class="slider" min="50" max="95" value="75" onchange="calculateROI()">
+                        <div class="slider-labels">
+                            <span>50%</span>
+                            <span id="successValue">75%</span>
+                            <span>95%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Implementation Investment (£)</label>
+                    <input type="number" id="investment" class="form-control" value="25000" min="5000" max="500000" onchange="calculateROI()">
+                </div>
+
+                <div class="form-group">
+                    <label>Annual Software/Infrastructure Costs (£)</label>
+                    <input type="number" id="annualCosts" class="form-control" value="12000" min="1000" max="100000" onchange="calculateROI()">
+                </div>
+            </div>
+
+            <div class="results-section">
+                <h2>💰 ROI Analysis</h2>
+                
+                <div class="result-card">
+                    <div class="result-number" id="roiPercentage">280%</div>
+                    <div class="result-label">First Year ROI</div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-number" id="paybackMonths">4.2</div>
+                    <div class="result-label">Payback Period (Months)</div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-number" id="annualSavings">£140K</div>
+                    <div class="result-label">Annual Savings</div>
+                </div>
+
+                <div class="breakdown">
+                    <h3>💡 Savings Breakdown</h3>
+                    <div class="breakdown-item">
+                        <span>Time Savings Value:</span>
+                        <span id="timeSavings">£96,000</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Efficiency Gains:</span>
+                        <span id="efficiencyGains">£32,000</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Error Reduction:</span>
+                        <span id="errorReduction">£18,000</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Quality Improvements:</span>
+                        <span id="qualityImprovements">£24,000</span>
+                    </div>
+                </div>
+
+                <div class="breakdown">
+                    <h3>💸 Investment Breakdown</h3>
+                    <div class="breakdown-item">
+                        <span>Initial Implementation:</span>
+                        <span id="initialCost">£25,000</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Annual Running Costs:</span>
+                        <span id="runningCosts">£12,000</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Training & Change Management:</span>
+                        <span id="trainingCosts">£8,000</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="assumptions">
+            <h3>📋 Calculation Assumptions</h3>
+            <ul id="assumptionsList">
+                <li>Level 1 automation typically achieves 2-4x productivity improvements</li>
+                <li>Implementation includes training, change management, and first 6 months support</li>
+                <li>Conservative estimates based on proven enterprise deployments</li>
+                <li>ROI calculations include both direct time savings and quality improvements</li>
+                <li>Payback period accounts for implementation time and adoption curve</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        let currentLevel = 1;
+        
+        const levelMultipliers = {
+            1: { productivity: 2.5, complexity: 1.0, timeline: 1, risk: 0.8 },
+            2: { productivity: 4.0, complexity: 1.8, timeline: 6, risk: 1.2 },
+            3: { productivity: 8.0, complexity: 3.0, timeline: 12, risk: 2.0 }
+        };
+
+        const levelAssumptions = {
+            1: [
+                "Level 1 automation typically achieves 2-4x productivity improvements",
+                "Implementation includes training, change management, and first 6 months support", 
+                "Conservative estimates based on proven enterprise deployments",
+                "ROI calculations include both direct time savings and quality improvements",
+                "Payback period accounts for implementation time and adoption curve"
+            ],
+            2: [
+                "Level 2 analytics discover 3-5 previously unknown optimization opportunities",
+                "Pattern discovery typically reveals 15-30% additional efficiency gains",
+                "Predictive capabilities reduce reactive costs by 20-40%",
+                "Implementation includes data integration and advanced analytics setup",
+                "ROI includes both operational improvements and strategic insights"
+            ],
+            3: [
+                "Level 3 transformation creates 10-50x competitive advantages", 
+                "Business model innovation generates new revenue streams",
+                "Market leadership position provides sustained competitive moats",
+                "Implementation includes organizational transformation and capability building",
+                "ROI includes market value creation and long-term positioning benefits"
+            ]
+        };
+
+        function selectLevel(level) {
+            currentLevel = level;
+            
+            // Update button states
+            document.querySelectorAll('.level-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.level-btn')[level - 1].classList.add('active');
+            
+            // Update investment defaults
+            const investments = { 1: 25000, 2: 75000, 3: 200000 };
+            const costs = { 1: 12000, 2: 24000, 3: 48000 };
+            
+            document.getElementById('investment').value = investments[level];
+            document.getElementById('annualCosts').value = costs[level];
+            
+            // Update assumptions
+            const assumptionsList = document.getElementById('assumptionsList');
+            assumptionsList.innerHTML = levelAssumptions[level].map(assumption => 
+                `<li>${assumption}</li>`
+            ).join('');
+            
+            calculateROI();
+        }
+
+        function calculateROI() {
+            const employees = parseInt(document.getElementById('employees').value);
+            const avgSalary = parseInt(document.getElementById('avgSalary').value);
+            const automatableTime = parseInt(document.getElementById('automatableTime').value);
+            const successRate = parseInt(document.getElementById('successRate').value);
+            const investment = parseInt(document.getElementById('investment').value);
+            const annualCosts = parseInt(document.getElementById('annualCosts').value);
+            
+            // Update slider displays
+            document.getElementById('automatableValue').textContent = automatableTime + '%';
+            document.getElementById('successValue').textContent = successRate + '%';
+            
+            const multiplier = levelMultipliers[currentLevel];
+            
+            // Calculate time savings
+            const hoursPerYear = 2080; // Full-time hours
+            const automatableHours = (automatableTime / 100) * hoursPerYear;
+            const automatedHours = (successRate / 100) * automatableHours;
+            const timeSavingsValue = employees * (avgSalary / hoursPerYear) * automatedHours * multiplier.productivity;
+            
+            // Calculate additional benefits
+            const efficiencyGains = timeSavingsValue * 0.25;
+            const errorReduction = timeSavingsValue * 0.15;
+            const qualityImprovements = timeSavingsValue * 0.20;
+            
+            const totalAnnualSavings = timeSavingsValue + efficiencyGains + errorReduction + qualityImprovements;
+            
+            // Calculate costs
+            const trainingCosts = investment * 0.3;
+            const totalFirstYearCosts = investment + annualCosts + trainingCosts;
+            
+            // Calculate ROI
+            const netBenefit = totalAnnualSavings - totalFirstYearCosts;
+            const roi = (netBenefit / totalFirstYearCosts) * 100;
+            const paybackMonths = (totalFirstYearCosts / (totalAnnualSavings / 12));
+            
+            // Update display
+            document.getElementById('roiPercentage').textContent = Math.round(roi) + '%';
+            document.getElementById('paybackMonths').textContent = paybackMonths.toFixed(1);
+            document.getElementById('annualSavings').textContent = '£' + Math.round(totalAnnualSavings / 1000) + 'K';
+            
+            document.getElementById('timeSavings').textContent = '£' + Math.round(timeSavingsValue / 1000) + 'K';
+            document.getElementById('efficiencyGains').textContent = '£' + Math.round(efficiencyGains / 1000) + 'K';
+            document.getElementById('errorReduction').textContent = '£' + Math.round(errorReduction / 1000) + 'K';
+            document.getElementById('qualityImprovements').textContent = '£' + Math.round(qualityImprovements / 1000) + 'K';
+            
+            document.getElementById('initialCost').textContent = '£' + Math.round(investment / 1000) + 'K';
+            document.getElementById('runningCosts').textContent = '£' + Math.round(annualCosts / 1000) + 'K';
+            document.getElementById('trainingCosts').textContent = '£' + Math.round(trainingCosts / 1000) + 'K';
+        }
+
+        // Initialize
+        calculateROI();
+    </script>
+</body>
+</html>
