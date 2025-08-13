@@ -5,6 +5,7 @@ import { resolve } from 'path'
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [react()],
+    base: '/enterprise-agent-toolkit/enterprise-templates-showcase/',
 
     // Define path aliases (similar to Create React App)
     resolve: {
