@@ -6,6 +6,7 @@ import { resolve } from 'path'
 export default defineConfig({
     plugins: [react()],
     base: '/enterprise-agent-toolkit/enterprise-templates-showcase/',
+    root: '.',
 
     // Define path aliases (similar to Create React App)
     resolve: {

@@ -1,14 +1,10 @@
 import { 
-    Building20Regular,
-    Person20Regular, 
-    Search20Regular,
-    Money20Regular,
-    VehicleBus20Regular,
-    Headset20Regular,
-    Doctor20Regular,
-    Scales20Regular,
-    Megaphone20Regular,
-    Server20Regular
+    Building20Filled,
+    DocumentSearch20Filled,
+    MoneyCalculator20Filled,
+    VehicleTruck20Filled,
+    HeadphonesSoundWave20Filled,
+    Stethoscope20Filled
 } from "@fluentui/react-icons";
 
 export interface EnterpriseAgent {
@@ -47,7 +43,7 @@ export const enterpriseTemplates: EnterpriseTemplate[] = [
     {
         id: "cross-department-orchestrator",
         title: "Cross-Department Task Orchestrator",
-        icon: <Building20Regular />,
+        icon: <Building20Filled />,
         industry: "Enterprise Operations",
         description: "Automates complex workflows across HR, IT, Finance, and Operations departments with intelligent task routing and coordination.",
         agents: [
@@ -80,7 +76,7 @@ export const enterpriseTemplates: EnterpriseTemplate[] = [
     {
         id: "healthcare-multi-agent-avatar",
         title: "Healthcare Multi-Agent Avatar",
-        icon: <Person20Regular />,
+        icon: <Stethoscope20Filled />,
         industry: "Healthcare",
         description: "HIPAA-compliant patient care coordination system with specialized medical agents for appointment scheduling, treatment planning, and care management.",
         agents: [
@@ -113,7 +109,7 @@ export const enterpriseTemplates: EnterpriseTemplate[] = [
     {
         id: "gpt-rag-agent-orchestrator", 
         title: "GPT-RAG Agent Orchestrator",
-        icon: <Search20Regular />,
+        icon: <DocumentSearch20Filled />,
         industry: "Knowledge Management",
         description: "Intelligent document retrieval and analysis system combining GPT capabilities with RAG architecture for enterprise knowledge management.",
         agents: [
@@ -146,7 +142,7 @@ export const enterpriseTemplates: EnterpriseTemplate[] = [
     {
         id: "financial-services-platform",
         title: "Financial Services Multi-Agent Platform", 
-        icon: <Money20Regular />,
+        icon: <MoneyCalculator20Filled />,
         industry: "Financial Services",
         description: "Regulatory-compliant financial operations platform handling trading, risk assessment, compliance monitoring, and client portfolio management.",
         agents: [
@@ -179,7 +175,7 @@ export const enterpriseTemplates: EnterpriseTemplate[] = [
     {
         id: "supply-chain-optimization",
         title: "Supply Chain Optimization Engine",
-        icon: <VehicleBus20Regular />,
+        icon: <VehicleTruck20Filled />,
         industry: "Manufacturing & Logistics", 
         description: "End-to-end supply chain management with predictive analytics, inventory optimization, and supplier coordination automation.",
         agents: [
@@ -212,7 +208,7 @@ export const enterpriseTemplates: EnterpriseTemplate[] = [
     {
         id: "customer-service-hub",
         title: "Customer Service Orchestration Hub",
-        icon: <Headset20Regular />,
+        icon: <HeadphonesSoundWave20Filled />,
         industry: "Customer Experience",
         description: "Multi-channel customer support platform with intelligent routing, escalation management, and satisfaction optimization.",
         agents: [
@@ -270,42 +266,42 @@ export const enterpriseQuickTasks: EnterpriseQuickTask[] = [
         id: "cross-dept-onboarding",
         title: "Employee Onboarding",
         description: "Orchestrate cross-department onboarding for new employee Sarah Johnson.",
-        icon: <Building20Regular />,
+        icon: <Building20Filled />,
         templateId: "cross-department-orchestrator"
     },
     {
         id: "healthcare-patient-care",
         title: "Patient Care Coordination",
         description: "Coordinate multi-specialist care plan for complex patient case.",
-        icon: <Person20Regular />,
+        icon: <Stethoscope20Filled />,
         templateId: "healthcare-multi-agent-avatar"
     },
     {
         id: "knowledge-research",
         title: "Enterprise Research",
         description: "Research regulatory compliance requirements using knowledge base.",
-        icon: <Search20Regular />,
+        icon: <DocumentSearch20Filled />,
         templateId: "gpt-rag-agent-orchestrator"
     },
     {
         id: "financial-portfolio",
         title: "Portfolio Optimization", 
         description: "Optimize client investment portfolio with risk management.",
-        icon: <Money20Regular />,
+        icon: <MoneyCalculator20Filled />,
         templateId: "financial-services-platform"
     },
     {
         id: "supply-chain-planning",
         title: "Supply Chain Planning",
         description: "Optimize inventory and logistics for Q4 demand forecast.",
-        icon: <VehicleBus20Regular />,
+        icon: <VehicleTruck20Filled />,
         templateId: "supply-chain-optimization"
     },
     {
         id: "customer-support", 
         title: "Customer Issue Resolution",
         description: "Route and resolve complex customer technical support case.",
-        icon: <Headset20Regular />,
+        icon: <HeadphonesSoundWave20Filled />,
         templateId: "customer-service-hub"
     }
 ];
