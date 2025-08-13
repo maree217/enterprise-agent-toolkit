@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microsoft Multi-Agent Solution Accelerator Showcase | AI Capability Builder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #323130;
+            background: linear-gradient(135deg, #0078d4 0%, #106ebe 50%, #005a9e 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0, 120, 212, 0.2);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            color: #0078d4;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .hero .subtitle {
+            font-size: 1.3rem;
+            color: #605e5c;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        .microsoft-badge {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(135deg, #00bcf2, #0078d4);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 120, 212, 0.3);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f3f2f1, #faf9f8);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #edebe9;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #0078d4;
+            display: block;
+        }
+
+        .stat-label {
+            color: #605e5c;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .architecture-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .architecture-section h2 {
+            color: #0078d4;
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid #0078d4;
+            padding-bottom: 0.5rem;
+        }
+
+        .agent-ecosystem {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .agent-card {
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            border: 2px solid #e1dfdd;
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .agent-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #0078d4, #106ebe);
+        }
+
+        .agent-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 120, 212, 0.2);
+            border-color: #0078d4;
+        }
+
+        .agent-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .agent-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #323130;
+            margin-bottom: 0.8rem;
+        }
+
+        .agent-description {
+            color: #605e5c;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .agent-tools {
+            background: #f3f2f1;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .agent-tools-title {
+            font-weight: 600;
+            color: #323130;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .tools-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tool-tag {
+            background: #0078d4;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .workflow-demo {
+            background: linear-gradient(135deg, #323130, #484644);
+            color: white;
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .workflow-demo h2 {
+            color: #00bcf2;
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .workflow-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .workflow-step {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .step-number {
+            background: #00bcf2;
+            color: #323130;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: white;
+        }
+
+        .step-description {
+            color: #e1dfdd;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .tech-stack {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .tech-item {
+            background: linear-gradient(135deg, #0078d4, #106ebe);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+        }
+
+        .tech-item:hover {
+            transform: scale(1.05);
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #00bcf2, #0078d4);
+            color: white;
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #0078d4;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .partnership-badge {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            display: inline-block;
+            margin: 1rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .hero, .architecture-section, .workflow-demo, .tech-stack, .cta-section {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <div class="microsoft-badge">
+                🏢 Microsoft Solution Accelerator Partnership
+            </div>
+            
+            <h1>Multi-Agent Custom Automation Engine</h1>
+            <p class="subtitle">
+                Enterprise-grade multi-agent orchestration system that automates complex organizational workflows through specialized AI agents. Built with Microsoft Semantic Kernel and deployed on Azure Container Apps.
+            </p>
+
+            <div class="partnership-badge">
+                🤝 Official Microsoft Solution Accelerator Implementation
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">6</span>
+                    <div class="stat-label">Specialized AI Agents</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">95%</span>
+                    <div class="stat-label">Process Automation</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">70%</span>
+                    <div class="stat-label">Time Reduction</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">24/7</span>
+                    <div class="stat-label">Availability</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Agent Ecosystem -->
+        <div class="architecture-section">
+            <h2>🤖 Intelligent Agent Ecosystem</h2>
+            <p>Our multi-agent system orchestrates specialized AI agents that work together to automate complex cross-departmental workflows.</p>
+
+            <div class="agent-ecosystem">
+                <div class="agent-card">
+                    <span class="agent-icon">🧠</span>
+                    <div class="agent-name">Planner Agent</div>
+                    <div class="agent-description">
+                        Master orchestrator that breaks down complex user requests into executable plans and coordinates agent collaboration.
+                    </div>
+                    <div class="agent-tools">
+                        <div class="agent-tools-title">Core Capabilities:</div>
+                        <div class="tools-list">
+                            <span class="tool-tag">Task Decomposition</span>
+                            <span class="tool-tag">Resource Planning</span>
+                            <span class="tool-tag">Workflow Design</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="agent-card">
+                    <span class="agent-icon">👥</span>
+                    <div class="agent-name">HR Agent</div>
+                    <div class="agent-description">
+                        Automates human resources processes including employee onboarding, benefits management, and payroll coordination.
+                    </div>
+                    <div class="agent-tools">
+                        <div class="agent-tools-title">HR Tools:</div>
+                        <div class="tools-list">
+                            <span class="tool-tag">Onboarding</span>
+                            <span class="tool-tag">Benefits</span>
+                            <span class="tool-tag">Payroll</span>
+                            <span class="tool-tag">Policies</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="agent-card">
+                    <span class="agent-icon">📢</span>
+                    <div class="agent-name">Marketing Agent</div>
+                    <div class="agent-description">
+                        Manages marketing campaigns, content creation, social media, and brand communications across channels.
+                    </div>
+                    <div class="agent-tools">
+                        <div class="agent-tools-title">Marketing Tools:</div>
+                        <div class="tools-list">
+                            <span class="tool-tag">Campaigns</span>
+                            <span class="tool-tag">Content</span>
+                            <span class="tool-tag">Analytics</span>
+                            <span class="tool-tag">Social Media</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="agent-card">
+                    <span class="agent-icon">🛠️</span>
+                    <div class="agent-name">Product Agent</div>
+                    <div class="agent-description">
+                        Handles product development lifecycle, specifications, roadmap planning, and quality testing coordination.
+                    </div>
+                    <div class="agent-tools">
+                        <div class="agent-tools-title">Product Tools:</div>
+                        <div class="tools-list">
+                            <span class="tool-tag">Specifications</span>
+                            <span class="tool-tag">Roadmap</span>
+                            <span class="tool-tag">Testing</span>
+                            <span class="tool-tag">Launch</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="agent-card">
+                    <span class="agent-icon">💻</span>
+                    <div class="agent-name">Tech Support Agent</div>
+                    <div class="agent-description">
+                        Provides technical support, manages IT tickets, monitors system health, and coordinates infrastructure needs.
+                    </div>
+                    <div class="agent-tools">
+                        <div class="agent-tools-title">Tech Tools:</div>
+                        <div class="tools-list">
+                            <span class="tool-tag">Tickets</span>
+                            <span class="tool-tag">Monitoring</span>
+                            <span class="tool-tag">Support</span>
+                            <span class="tool-tag">Infrastructure</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="agent-card">
+                    <span class="agent-icon">🛒</span>
+                    <div class="agent-name">Procurement Agent</div>
+                    <div class="agent-description">
+                        Manages vendor relationships, contract negotiations, purchase orders, and supply chain coordination.
+                    </div>
+                    <div class="agent-tools">
+                        <div class="agent-tools-title">Procurement Tools:</div>
+                        <div class="tools-list">
+                            <span class="tool-tag">Vendors</span>
+                            <span class="tool-tag">Contracts</span>
+                            <span class="tool-tag">Orders</span>
+                            <span class="tool-tag">Supply Chain</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Workflow Demo -->
+        <div class="workflow-demo">
+            <h2>⚡ Automated Workflow Example</h2>
+            <p>See how a simple employee onboarding request triggers a coordinated multi-agent workflow:</p>
+
+            <div class="workflow-steps">
+                <div class="workflow-step">
+                    <div class="step-number">1</div>
+                    <div class="step-title">User Request</div>
+                    <div class="step-description">
+                        "Onboard new employee Jessica Smith starting Monday"
+                    </div>
+                </div>
+
+                <div class="workflow-step">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Planner Analysis</div>
+                    <div class="step-description">
+                        Breaks down into: HR setup, IT equipment, workspace, marketing introduction
+                    </div>
+                </div>
+
+                <div class="workflow-step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">HR Agent</div>
+                    <div class="step-description">
+                        Creates employee profile, enrolls in benefits, generates contracts
+                    </div>
+                </div>
+
+                <div class="workflow-step">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Tech Support</div>
+                    <div class="step-description">
+                        Orders laptop, creates accounts, sets up security access
+                    </div>
+                </div>
+
+                <div class="workflow-step">
+                    <div class="step-number">5</div>
+                    <div class="step-title">Marketing</div>
+                    <div class="step-description">
+                        Prepares welcome materials, updates team directory, announces arrival
+                    </div>
+                </div>
+
+                <div class="workflow-step">
+                    <div class="step-number">6</div>
+                    <div class="step-title">Coordination</div>
+                    <div class="step-description">
+                        All agents report completion, user gets comprehensive status update
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technology Stack -->
+        <div class="tech-stack">
+            <h2>🏗️ Enterprise Technology Stack</h2>
+            <p>Built on Microsoft's most advanced AI and cloud technologies for enterprise-grade reliability and scalability.</p>
+
+            <div class="tech-grid">
+                <div class="tech-item">Azure OpenAI Service</div>
+                <div class="tech-item">Semantic Kernel</div>
+                <div class="tech-item">Azure Container Apps</div>
+                <div class="tech-item">Azure Cosmos DB</div>
+                <div class="tech-item">Azure Key Vault</div>
+                <div class="tech-item">Application Insights</div>
+                <div class="tech-item">Azure Container Registry</div>
+                <div class="tech-item">React + TypeScript</div>
+                <div class="tech-item">Fluent UI Components</div>
+                <div class="tech-item">Azure AD Authentication</div>
+                <div class="tech-item">OTLP Tracing</div>
+                <div class="tech-item">Python + FastAPI</div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="cta-section">
+            <h2>🚀 Ready to Transform Your Organization?</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 1rem;">
+                Experience the future of enterprise automation with our Microsoft-certified multi-agent solution.
+            </p>
+            <p>
+                As an official Microsoft Solution Accelerator partner, we deliver production-ready implementations that scale with your business needs.
+            </p>
+
+            <div class="cta-buttons">
+                <a href="https://aicapabilitybuilder.com" class="btn btn-primary">
+                    📞 Schedule Demo
+                </a>
+                <a href="mailto:ram@aicapabilitybuilder.com" class="btn btn-secondary">
+                    💬 Discuss Your Use Case
+                </a>
+                <a href="../index.html" class="btn btn-secondary">
+                    📚 Explore Full Toolkit
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

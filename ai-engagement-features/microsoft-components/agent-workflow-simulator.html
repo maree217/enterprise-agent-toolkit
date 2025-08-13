@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Agent Workflow Simulator | AI Capability Builder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .simulator-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            color: #0078d4;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #605e5c;
+            font-size: 1.1rem;
+        }
+
+        .quick-tasks {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .task-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border: 2px solid #dee2e6;
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .task-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 120, 212, 0.2);
+            border-color: #0078d4;
+        }
+
+        .task-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .task-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #323130;
+        }
+
+        .task-description {
+            color: #605e5c;
+            font-size: 0.9rem;
+        }
+
+        .input-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .custom-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .custom-input:focus {
+            outline: none;
+            border-color: #0078d4;
+        }
+
+        .simulate-btn {
+            background: linear-gradient(135deg, #0078d4, #106ebe);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .simulate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 120, 212, 0.3);
+        }
+
+        .simulate-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .workflow-display {
+            background: #323130;
+            color: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .workflow-display.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .workflow-step {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid #00bcf2;
+            opacity: 0;
+            animation: stepAppear 0.8s ease-out forwards;
+        }
+
+        .workflow-step:nth-child(1) { animation-delay: 0.2s; }
+        .workflow-step:nth-child(2) { animation-delay: 0.6s; }
+        .workflow-step:nth-child(3) { animation-delay: 1.0s; }
+        .workflow-step:nth-child(4) { animation-delay: 1.4s; }
+        .workflow-step:nth-child(5) { animation-delay: 1.8s; }
+        .workflow-step:nth-child(6) { animation-delay: 2.2s; }
+
+        @keyframes stepAppear {
+            from { 
+                opacity: 0; 
+                transform: translateX(-50px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateX(0);
+            }
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .step-agent {
+            background: #0078d4;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-right: 1rem;
+        }
+
+        .step-status {
+            color: #00bcf2;
+            font-weight: 600;
+        }
+
+        .step-content {
+            color: #e1dfdd;
+            line-height: 1.5;
+        }
+
+        .step-actions {
+            margin-top: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .action-tag {
+            background: rgba(0, 188, 242, 0.2);
+            color: #00bcf2;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            border: 1px solid #00bcf2;
+        }
+
+        .summary-section {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 1rem;
+            text-align: center;
+            display: none;
+        }
+
+        .summary-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in 2.6s both;
+        }
+
+        .reset-btn {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .reset-btn:hover {
+            background: white;
+            color: #28a745;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #00bcf2;
+        }
+
+        .loading::after {
+            content: '';
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #0078d4;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-left: 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .simulator-container {
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .quick-tasks {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="simulator-container">
+        <div class="header">
+            <h1>🤖 Multi-Agent Workflow Simulator</h1>
+            <p>Experience how specialized AI agents collaborate to automate complex business processes</p>
+        </div>
+
+        <div class="quick-tasks">
+            <div class="task-card" onclick="simulateTask('onboard')">
+                <span class="task-icon">👥</span>
+                <div class="task-title">Employee Onboarding</div>
+                <div class="task-description">Onboard new employee Jessica Smith starting Monday</div>
+            </div>
+            
+            <div class="task-card" onclick="simulateTask('mobile')">
+                <span class="task-icon">📱</span>
+                <div class="task-title">Mobile Plan Setup</div>
+                <div class="task-description">Enable international roaming for business trip</div>
+            </div>
+            
+            <div class="task-card" onclick="simulateTask('press')">
+                <span class="task-icon">📄</span>
+                <div class="task-title">Press Release</div>
+                <div class="task-description">Draft press release for new product launch</div>
+            </div>
+            
+            <div class="task-card" onclick="simulateTask('procurement')">
+                <span class="task-icon">🛒</span>
+                <div class="task-title">Equipment Procurement</div>
+                <div class="task-description">Order new laptops for expanding team</div>
+            </div>
+        </div>
+
+        <div class="input-section">
+            <h3 style="margin-bottom: 1rem; color: #323130;">Or Enter Custom Request:</h3>
+            <textarea 
+                id="customTask" 
+                class="custom-input" 
+                placeholder="Example: Create a marketing campaign for our new AI product, including social media posts, press release, and customer outreach plan..."
+            ></textarea>
+            <button class="simulate-btn" onclick="simulateCustomTask()">
+                🚀 Simulate Multi-Agent Workflow
+            </button>
+        </div>
+
+        <div id="workflowDisplay" class="workflow-display"></div>
+        <div id="summarySection" class="summary-section"></div>
+    </div>
+
+    <script>
+        const workflows = {
+            onboard: {
+                title: "Employee Onboarding: Jessica Smith",
+                steps: [
+                    {
+                        agent: "🧠 Planner Agent",
+                        status: "Analyzing Request",
+                        content: "Breaking down onboarding into coordinated tasks: HR setup, IT provisioning, workspace preparation, and team integration.",
+                        actions: ["Task Decomposition", "Resource Planning", "Timeline Creation"]
+                    },
+                    {
+                        agent: "👥 HR Agent",
+                        status: "Processing HR Requirements",
+                        content: "Creating employee profile, generating offer letter, enrolling in benefits, setting up payroll, and scheduling orientation.",
+                        actions: ["Profile Creation", "Benefits Enrollment", "Contract Generation", "Orientation Scheduling"]
+                    },
+                    {
+                        agent: "💻 Tech Support Agent",
+                        status: "IT Provisioning",
+                        content: "Ordering laptop and equipment, creating user accounts, setting up email, configuring security access, and preparing workstation.",
+                        actions: ["Equipment Order", "Account Creation", "Security Setup", "Workstation Config"]
+                    },
+                    {
+                        agent: "📢 Marketing Agent",
+                        status: "Communication Coordination",
+                        content: "Preparing welcome materials, updating team directory, scheduling team introduction, and announcing new hire to relevant stakeholders.",
+                        actions: ["Welcome Kit", "Directory Update", "Team Announcement", "Stakeholder Communication"]
+                    },
+                    {
+                        agent: "🛒 Procurement Agent",
+                        status: "Resource Coordination",
+                        content: "Coordinating with facilities for desk assignment, ordering business cards and office supplies, and ensuring workspace readiness.",
+                        actions: ["Desk Assignment", "Supply Orders", "Business Cards", "Workspace Setup"]
+                    },
+                    {
+                        agent: "📋 Group Chat Manager",
+                        status: "Workflow Coordination",
+                        content: "All agents have completed their tasks. Employee onboarding workflow completed successfully. Jessica Smith is ready to start Monday with all systems and resources prepared.",
+                        actions: ["Status Consolidation", "Timeline Verification", "Completion Report", "Success Notification"]
+                    }
+                ],
+                summary: {
+                    title: "🎉 Onboarding Complete!",
+                    content: "Jessica Smith's onboarding has been fully automated across all departments. HR setup complete, IT systems provisioned, workspace ready, and team notifications sent. Estimated time saved: 8 hours of manual coordination."
+                }
+            },
+            mobile: {
+                title: "Mobile Plan: International Roaming Setup",
+                steps: [
+                    {
+                        agent: "🧠 Planner Agent",
+                        status: "Request Analysis",
+                        content: "Analyzing international roaming request: destination countries, duration, data requirements, and cost optimization.",
+                        actions: ["Requirement Analysis", "Cost Calculation", "Plan Optimization"]
+                    },
+                    {
+                        agent: "🛒 Procurement Agent",
+                        status: "Vendor Coordination",
+                        content: "Contacting telecom providers, comparing roaming plans, negotiating rates, and selecting optimal international package.",
+                        actions: ["Vendor Outreach", "Plan Comparison", "Rate Negotiation", "Package Selection"]
+                    },
+                    {
+                        agent: "💻 Tech Support Agent",
+                        status: "Technical Setup",
+                        content: "Configuring roaming settings, updating device profiles, setting usage alerts, and providing technical documentation.",
+                        actions: ["Roaming Config", "Device Updates", "Alert Setup", "Documentation"]
+                    },
+                    {
+                        agent: "👥 HR Agent",
+                        status: "Policy Compliance",
+                        content: "Verifying travel policy compliance, updating expense categories, and ensuring proper approval workflows are in place.",
+                        actions: ["Policy Check", "Expense Setup", "Approval Workflow", "Compliance Verification"]
+                    }
+                ],
+                summary: {
+                    title: "📱 Roaming Activated!",
+                    content: "International roaming successfully configured with optimized rates and usage monitoring. All policy requirements met and technical setup completed."
+                }
+            },
+            press: {
+                title: "Press Release: Product Launch Coordination",
+                steps: [
+                    {
+                        agent: "🧠 Planner Agent",
+                        status: "Campaign Planning",
+                        content: "Structuring press release campaign: key messages, target audience, distribution channels, and timeline coordination.",
+                        actions: ["Message Strategy", "Audience Analysis", "Channel Planning", "Timeline Creation"]
+                    },
+                    {
+                        agent: "📢 Marketing Agent",
+                        status: "Content Creation",
+                        content: "Drafting press release, creating supporting materials, designing graphics, and preparing social media content.",
+                        actions: ["Press Release Draft", "Supporting Materials", "Graphics Design", "Social Content"]
+                    },
+                    {
+                        agent: "🛠️ Product Agent",
+                        status: "Technical Review",
+                        content: "Providing technical specifications, feature descriptions, competitive advantages, and ensuring accuracy of product details.",
+                        actions: ["Spec Review", "Feature Documentation", "Competitive Analysis", "Accuracy Check"]
+                    },
+                    {
+                        agent: "👥 HR Agent",
+                        status: "Stakeholder Coordination",
+                        content: "Coordinating executive quotes, scheduling spokesperson availability, and managing internal communications.",
+                        actions: ["Executive Quotes", "Spokesperson Schedule", "Internal Comms", "Quote Approval"]
+                    }
+                ],
+                summary: {
+                    title: "📰 Press Release Ready!",
+                    content: "Comprehensive press release package completed with technical accuracy, executive approval, and multi-channel distribution plan activated."
+                }
+            },
+            procurement: {
+                title: "Equipment Procurement: Team Laptop Orders",
+                steps: [
+                    {
+                        agent: "🧠 Planner Agent",
+                        status: "Requirements Planning",
+                        content: "Analyzing team expansion needs: headcount projections, equipment specifications, budget constraints, and delivery timeline.",
+                        actions: ["Needs Analysis", "Spec Requirements", "Budget Planning", "Timeline Mapping"]
+                    },
+                    {
+                        agent: "🛒 Procurement Agent",
+                        status: "Vendor Management",
+                        content: "Sourcing suppliers, requesting quotes, comparing specifications, negotiating terms, and placing orders.",
+                        actions: ["Supplier Sourcing", "Quote Requests", "Spec Comparison", "Order Placement"]
+                    },
+                    {
+                        agent: "💻 Tech Support Agent",
+                        status: "Technical Preparation",
+                        content: "Preparing device imaging, software licensing, security configurations, and deployment procedures.",
+                        actions: ["Device Imaging", "License Management", "Security Config", "Deployment Prep"]
+                    },
+                    {
+                        agent: "👥 HR Agent",
+                        status: "Asset Management",
+                        content: "Creating asset tracking records, preparing assignment documentation, and coordinating with new hire onboarding.",
+                        actions: ["Asset Tracking", "Assignment Docs", "Onboarding Sync", "Policy Updates"]
+                    }
+                ],
+                summary: {
+                    title: "💻 Equipment Ordered!",
+                    content: "Laptop procurement completed with optimized pricing, technical preparation underway, and asset management systems updated for seamless deployment."
+                }
+            }
+        };
+
+        function simulateTask(taskType) {
+            const workflow = workflows[taskType];
+            const display = document.getElementById('workflowDisplay');
+            const summary = document.getElementById('summarySection');
+            
+            // Reset displays
+            display.innerHTML = '';
+            summary.innerHTML = '';
+            display.classList.remove('active');
+            summary.classList.remove('active');
+            
+            // Show loading
+            display.innerHTML = '<div class="loading">Initializing multi-agent workflow...</div>';
+            display.classList.add('active');
+            
+            setTimeout(() => {
+                renderWorkflow(workflow);
+            }, 1500);
+        }
+
+        function simulateCustomTask() {
+            const customInput = document.getElementById('customTask');
+            const task = customInput.value.trim();
+            
+            if (!task) {
+                alert('Please enter a custom task description');
+                return;
+            }
+            
+            const display = document.getElementById('workflowDisplay');
+            const summary = document.getElementById('summarySection');
+            
+            // Reset displays
+            display.innerHTML = '';
+            summary.innerHTML = '';
+            display.classList.remove('active');
+            summary.classList.remove('active');
+            
+            // Show loading
+            display.innerHTML = '<div class="loading">Analyzing custom request and coordinating agents...</div>';
+            display.classList.add('active');
+            
+            setTimeout(() => {
+                renderCustomWorkflow(task);
+            }, 2000);
+        }
+
+        function renderWorkflow(workflow) {
+            const display = document.getElementById('workflowDisplay');
+            const summary = document.getElementById('summarySection');
+            
+            let html = `<h2 style="color: #00bcf2; margin-bottom: 1.5rem;">⚡ ${workflow.title}</h2>`;
+            
+            workflow.steps.forEach(step => {
+                html += `
+                    <div class="workflow-step">
+                        <div class="step-header">
+                            <span class="step-agent">${step.agent}</span>
+                            <span class="step-status">${step.status}</span>
+                        </div>
+                        <div class="step-content">${step.content}</div>
+                        <div class="step-actions">
+                            ${step.actions.map(action => `<span class="action-tag">${action}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            display.innerHTML = html;
+            
+            // Show summary after all steps
+            setTimeout(() => {
+                summary.innerHTML = `
+                    <h2>${workflow.summary.title}</h2>
+                    <p style="font-size: 1.1rem; margin: 1rem 0;">${workflow.summary.content}</p>
+                    <button class="reset-btn" onclick="resetSimulation()">🔄 Try Another Workflow</button>
+                `;
+                summary.classList.add('active');
+            }, (workflow.steps.length * 400) + 1000);
+        }
+
+        function renderCustomWorkflow(task) {
+            const display = document.getElementById('workflowDisplay');
+            const summary = document.getElementById('summarySection');
+            
+            const customWorkflow = generateCustomWorkflow(task);
+            
+            let html = `<h2 style="color: #00bcf2; margin-bottom: 1.5rem;">⚡ Custom Request: AI-Powered Analysis</h2>`;
+            
+            customWorkflow.steps.forEach(step => {
+                html += `
+                    <div class="workflow-step">
+                        <div class="step-header">
+                            <span class="step-agent">${step.agent}</span>
+                            <span class="step-status">${step.status}</span>
+                        </div>
+                        <div class="step-content">${step.content}</div>
+                        <div class="step-actions">
+                            ${step.actions.map(action => `<span class="action-tag">${action}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            display.innerHTML = html;
+            
+            setTimeout(() => {
+                summary.innerHTML = `
+                    <h2>🎯 Custom Workflow Complete!</h2>
+                    <p style="font-size: 1.1rem; margin: 1rem 0;">Your custom request has been analyzed and processed through our multi-agent system. Each specialized agent contributed their expertise to deliver a comprehensive solution.</p>
+                    <p style="font-size: 0.9rem; opacity: 0.9; margin-bottom: 1rem;"><strong>Original Request:</strong> "${task}"</p>
+                    <button class="reset-btn" onclick="resetSimulation()">🔄 Try Another Request</button>
+                `;
+                summary.classList.add('active');
+            }, 3000);
+        }
+
+        function generateCustomWorkflow(task) {
+            const lowerTask = task.toLowerCase();
+            
+            let steps = [
+                {
+                    agent: "🧠 Planner Agent",
+                    status: "Analyzing Request",
+                    content: `Breaking down your request into actionable components and identifying the optimal agent coordination strategy.`,
+                    actions: ["Request Analysis", "Task Decomposition", "Agent Selection", "Workflow Design"]
+                }
+            ];
+            
+            // Add relevant agents based on task content
+            if (lowerTask.includes('marketing') || lowerTask.includes('campaign') || lowerTask.includes('social') || lowerTask.includes('brand')) {
+                steps.push({
+                    agent: "📢 Marketing Agent",
+                    status: "Marketing Strategy",
+                    content: "Developing comprehensive marketing approach, creating content strategy, and coordinating multi-channel campaigns.",
+                    actions: ["Strategy Development", "Content Creation", "Channel Planning", "Campaign Execution"]
+                });
+            }
+            
+            if (lowerTask.includes('employee') || lowerTask.includes('hr') || lowerTask.includes('hiring') || lowerTask.includes('onboard')) {
+                steps.push({
+                    agent: "👥 HR Agent",
+                    status: "HR Coordination",
+                    content: "Managing human resources aspects, ensuring policy compliance, and coordinating people-related processes.",
+                    actions: ["Policy Review", "Process Coordination", "Documentation", "Compliance Check"]
+                });
+            }
+            
+            if (lowerTask.includes('technical') || lowerTask.includes('software') || lowerTask.includes('system') || lowerTask.includes('it')) {
+                steps.push({
+                    agent: "💻 Tech Support Agent",
+                    status: "Technical Implementation",
+                    content: "Handling technical requirements, system configurations, and ensuring optimal technical solutions.",
+                    actions: ["Technical Analysis", "System Design", "Implementation Plan", "Quality Assurance"]
+                });
+            }
+            
+            if (lowerTask.includes('product') || lowerTask.includes('development') || lowerTask.includes('feature') || lowerTask.includes('launch')) {
+                steps.push({
+                    agent: "🛠️ Product Agent",
+                    status: "Product Management",
+                    content: "Managing product aspects, specifications, roadmap coordination, and launch planning.",
+                    actions: ["Product Planning", "Specification Review", "Roadmap Update", "Launch Coordination"]
+                });
+            }
+            
+            if (lowerTask.includes('purchase') || lowerTask.includes('vendor') || lowerTask.includes('buy') || lowerTask.includes('procurement')) {
+                steps.push({
+                    agent: "🛒 Procurement Agent",
+                    status: "Procurement Management",
+                    content: "Managing vendor relationships, coordinating purchases, and optimizing procurement processes.",
+                    actions: ["Vendor Management", "Cost Optimization", "Order Processing", "Contract Management"]
+                });
+            }
+            
+            // Always end with coordination
+            steps.push({
+                agent: "📋 Group Chat Manager",
+                status: "Coordination Complete",
+                content: "All specialized agents have contributed their expertise. Your custom request has been processed comprehensively with cross-functional coordination.",
+                actions: ["Status Consolidation", "Quality Review", "Final Coordination", "Delivery Confirmation"]
+            });
+            
+            return { steps };
+        }
+
+        function resetSimulation() {
+            const display = document.getElementById('workflowDisplay');
+            const summary = document.getElementById('summarySection');
+            const customInput = document.getElementById('customTask');
+            
+            display.classList.remove('active');
+            summary.classList.remove('active');
+            customInput.value = '';
+            
+            setTimeout(() => {
+                display.innerHTML = '';
+                summary.innerHTML = '';
+            }, 500);
+        }
+    </script>
+</body>
+</html>
