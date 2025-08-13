@@ -275,10 +275,11 @@ const EnhancedEnterpriseShowcase: React.FC = () => {
                 {/* Enhanced Templates Grid */}
                 <div style={{ 
                     display: "grid", 
-                    gridTemplateColumns: "repeat(auto-fit, minmax(380px, 1fr))", 
-                    gap: "24px",
+                    gridTemplateColumns: "repeat(3, 1fr)", 
+                    gap: "20px",
                     marginBottom: "2rem"
-                }}>
+                }}
+                className="templates-grid">
                     {enterpriseTemplates.slice(0, 6).map((template, index) => (
                         <Card 
                             key={template.id}
@@ -688,6 +689,24 @@ const EnhancedEnterpriseShowcase: React.FC = () => {
 
                 .template-card:hover {
                     transform: translateY(-8px) scale(1.02);
+                }
+
+                .templates-grid {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 20px;
+                }
+
+                @media (max-width: 1200px) {
+                    .templates-grid {
+                        grid-template-columns: repeat(2, 1fr);
+                    }
+                }
+
+                @media (max-width: 768px) {
+                    .templates-grid {
+                        grid-template-columns: 1fr;
+                    }
                 }
             `}</style>
         </div>
