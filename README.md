@@ -1,5 +1,13 @@
 # 🧬 Enterprise Agent Toolkit - AI Implementation as a Service
 
+> **Note**: This repository has been consolidated into the **[Engineering Excellence Playbook](https://github.com/maree217/engineering-excellence-playbook)**, which serves as the central hub for all AI consulting resources. The key content from this repo has been migrated to:
+> - [Consulting Toolkit](https://github.com/maree217/engineering-excellence-playbook/tree/main/consulting-toolkit) - Sales materials, case studies, proposal templates
+> - [Assessment Tools](https://github.com/maree217/engineering-excellence-playbook/tree/main/consulting-toolkit/assessment-tools) - AI maturity assessments
+>
+> **This repository remains available for reference but is no longer actively maintained.**
+
+---
+
 **Transform your business with rapid, affordable AI agent deployment that builds internal capabilities**
 
 ---
